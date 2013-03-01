@@ -1,0 +1,4 @@
+pdflatex memoria.tex
+bibtex memoria.aux
+# makeindex -t memoria.glg -o memoria.gls -s memoria.ist memoria.glo
+pdflatex memoria.tex

@@ -1,0 +1,5 @@
+- Change log: 21 - 06 - 2011
+
+* The possibility of no evaluation were added to JEAF,i.e., some applications do not need to evaluate the individuals of the population in an objective function because the fitness value is given in any other way. If there is no specification of the evaluation strategy in the configuration file, this object of the EvolutionaryAlgorithm class is set to "null" and no evaluation is performed. The user is responsible of set the fitness value of the individuals in any other way to allow the performance of the evolutionary process because without fitness value there is no evolution.
+
+

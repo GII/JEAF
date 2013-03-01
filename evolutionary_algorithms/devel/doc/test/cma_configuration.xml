@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+    Document   : EvolutionaryAlgorithm.xml
+    Created on : 26 de octubre de 2006, 13:38
+    Author     : pilar
+    Description:
+        Purpose of the document follows.
+-->
+<!-- <!DOCTYPE EvolutionaryAlgorithm SYSTEM "es/udc/gii/common/eaf/config/dtd/EvolutionaryAlgorithm.dtd"> -->
+<EvolutionaryAlgorithm>
+    <!-- Clase que implementa el algoritmo evolutivo que se desea utilizar -->
+    <Class>es.udc.gii.common.eaf.algorithm.CMAEvolutionaryAlgorithm</Class>
+    <Comparator>es.udc.gii.common.eaf.algorithm.fitness.comparator.MinimizingFitnessComparator</Comparator>
+
+    <!-- Estrategia de evaluacion -->
+    <EvaluationStrategy>
+        <Class>es.udc.gii.common.eaf.algorithm.evaluate.SerialEvaluationStrategy</Class>
+    </EvaluationStrategy>
+    <Lambda>10</Lambda>
+    <InitialStandardDeviation>1.0</InitialStandardDeviation>
+    <InitialX>0.0</InitialX>
+    <!-- Configuracion de la poblacion -->
+    <Population>
+        <!-- Tamao -->
+        <Size>10</Size>
+        <!--Configuracion del individuo -->
+        <Individual>
+            <Class>es.udc.gii.common.eaf.algorithm.population.Individual</Class>
+            <Chromosome size="30">
+            </Chromosome>
+        </Individual>
+    </Population>
+    <!-- Configuracion de las cadenas de operadores -->
+    <OperatorChains>
+        <SelectionChain>
+            <Operator>
+                <Class>es.udc.gii.common.eaf.algorithm.operator.selection.CMAUpdateDistributionOperator</Class>        
+            </Operator>
+        </SelectionChain>
+        <ReproductionChain>
+            <Operator>
+                <Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.CMASamplePopulationOperator</Class>
+            </Operator>
+
+        </ReproductionChain>
+    </OperatorChains>
+    <Objective>
+	       <CheckBounds/>
+        <ObjectiveFunction>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.GeneralizedRastriginsObjectiveFunction</Class>
+            <MaxValue>0</MaxValue>
+            <MinValue>0</MinValue>
+        </ObjectiveFunction>
+    </Objective>
+    <RestartStrategy>
+        <Class>es.udc.gii.common.eaf.algorithm.restart.IPOPRestartStrategy</Class>
+        <MaxNumRestarts>4</MaxNumRestarts>
+        <IncrPopFactor>2.0</IncrPopFactor>
+    </RestartStrategy>
+    <RestartTests>
+        <RestartTest>
+            <Class>es.udc.gii.common.eaf.stoptest.cma.CMATolXStopTest</Class>
+        </RestartTest>
+        <RestartTest>
+            <Class>es.udc.gii.common.eaf.stoptest.cma.CMATolXUpStopTest</Class>
+        </RestartTest>
+        <RestartTest>
+            <Class>es.udc.gii.common.eaf.stoptest.TolFunStopTest</Class>
+            <TolFun>1.0e-11</TolFun>
+        </RestartTest>
+
+    </RestartTests>
+    <StopTests>
+        <StopTest>
+            <Class>es.udc.gii.common.eaf.stoptest.DimensionFEsStopTest</Class>
+            <Factor>10000</Factor>
+        </StopTest>
+        <StopTest>
+            <Class>es.udc.gii.common.eaf.stoptest.PerformanceFitnessStopTest</Class>
+            <Goal>10e-6</Goal>
+        </StopTest>
+    </StopTests>
+    <LogTool>
+        <Log>
+            <Class>es.udc.gii.common.eaf.log.BestMeanLogTool</Class>
+            <Folder>results</Folder>
+            <Name>ID</Name>
+        </Log>
+    </LogTool>
+</EvolutionaryAlgorithm>

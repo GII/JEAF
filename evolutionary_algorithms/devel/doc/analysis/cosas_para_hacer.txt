@@ -1,0 +1,39 @@
+19-02-2007
+
+	* "resetFitness" -> Como en el genetico del proyecto las funciones objetivo se pueden resetear al final de la evaluación de todos los 
+	individuos de la población.
+
+04-05-2008:
+
+	* Los genes sólo tienen valores [-1,1] y es el cromosoma el encargado de decodificarlos.
+	- Ventajas:
+		* No hay que implementar los operadores por tipo de gen.
+		* Sólo existe un tipo de gen --> ahora los cromosomas son diferentes: 				DoubleChromosome, FloatChromosome,ANNChromosome,...
+	* Implementación de los métodos de manejo de restricciones:
+		- Empezar por el epsilon-constrained method:
+			* Hay que modificar el operador de mutación del DE para que tenga en cuenta
+			la "feasible-elite" a la hora de escoger los individuos para la mutación. 			Será el operador el que "almacene" la elite y cada vez que se genera un 			operador se comprueba si entra o no en la elite.
+			* El método de manejo de restricciones calcula el valor "fi" para cada 
+			individuo y "corrige" el individuo si es necesario (cuando se cumplen las  			condiciones que establece el paper). Después de corregir hay que calcular
+			otra vez los valores objetivo y las restricciones.
+			* Necesito individuos-epsilon que guarden el valor "fi" de cada individuo.
+
+		1) Generar población inicial
+		2) Evaluación + manejo de restricciones.
+		Comienzo del bucle:
+			3) Operador de mutación de DE:
+				- Si la elite está vacía (1a generación) se busca la elite.
+				- Para cada individuo calcular el "trial"
+				- Evaluación + manejo de restricciones del "trial"
+				- Reemplazo del "trial" si es mejor que el "target"
+				- Comprobar si puede entrar en la elite
+
+		* El parámetro "epsilon" es de la estrategia de manejo de restricciones, pero ¿cómo 		se actualiza?, depende de la generación en la que estamos --> la estrategia de 			manejo de restricciones puede "recibir" el algoritmo igual que los operadores y
+		leer parámetros del algoritmo.
+			** Necesito que la estrategia de manejo de restricciones conozca el número 			de generaciones o evaluaciones que se han hecho porque en muchas estrategias  			el margen de la región factible varia con el número de 
+			generaciones/evaluaciones. Cuando se crea/configura la estrategia de manejo
+			de restricciones en la factoria se le pasa el algoritmo igual que las 				herramientas de log, o se le pasa como parámetro al método de evaluación.
+			** El método de manejo de restricciones va con la estrategia de evaluación 
+			porque también se paraleliza. 
+		
+			 
