@@ -1,4 +1,4 @@
-jeaf
+JEAF
 ====
 
 Java Evolutionary Algorithm Framework
