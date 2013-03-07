@@ -31,15 +31,11 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h2>JEAF concept</h2>
-
-<p>The JAVA Evolutionary Algorithm Framework (JEAF) is a collection of JAVA libraries developed in the Integrated Group for Engineering Research (GII) containing several evolutionary algorithms, real-parameter benchmark functions and analysis tools that can be applied in evolutionary computation R&amp;D. This framework is intensively used by the researchers of the GII and, consequently, it is in continuous improvement and extension.</p>
+        <p>The JAVA Evolutionary Algorithm Framework (JEAF) is a collection of JAVA libraries developed in the Integrated Group for Engineering Research (GII) containing several evolutionary algorithms, real-parameter benchmark functions and analysis tools that can be applied in evolutionary computation R&amp;D. This framework is intensively used by the researchers of the GII and, consequently, it is in continuous improvement and extension.</p>
 
 <p>It was born as a response to the lack of a free general library for evolutionary algorithms in JAVA that can be directly used by researchers or modified and extended favoured by the object-oriented design.</p>
 
-<h3>Main properties</h3>
-
-<p>The main properties of JEAF are the following:</p>
+<p>The <strong>main properties</strong> of JEAF are the following:</p>
 
 <ul>
 <li>
@@ -56,7 +52,7 @@
 <strong>Analysis tools:</strong> besides different evolutionary algorithms and benchmark functions, this framework provides several analysis tools and support to implement even more. These tools are developed with the aim of facilitating the comparison of results using different algorithms or different versions of the same algorithm. Evolutionary algorithm analysis tools and function analysis tools are included.</li>
 <li>
 <strong>Distributed processing supported:</strong> JEAF supports a very flexible distribution model for the evolution process, using MPI as the communication protocol (again, efficiency had something to do with this decision). Several models are supported (master-slave, islands…) with different topologies (grid, ring…) and ways of exchanging genetic material. The models supported can also be combined to create hybrid distribution schemes that adapt to the particular problem and / or hardware availability.</li>
-</ul>
+</ul><p>Go to <a href="http://github.com/GII/JEAF/wiki">JEAF wiki</a> or <a href="http://github.com/GII/JEAF">JEAF repository</a> for more information and / or download.</p>
       </section>
     </div>
 
@@ -68,16 +64,17 @@
       </footer>
     </div>
 
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-39091828-1']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();                    
-    </script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-39091828-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 
   </body>
 </html>
