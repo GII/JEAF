@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+    Document   : EvolutionaryAlgorithm.xml
+    Created on : 26 de octubre de 2006, 13:38
+    Author     : pilar
+    Description:
+        Purpose of the document follows.
+-->
+<!-- <!DOCTYPE EvolutionaryAlgorithm SYSTEM "es/udc/gii/common/eaf/config/dtd/EvolutionaryAlgorithm.dtd"> -->
+<EvolutionaryAlgorithm>
+    <!-- Clase que implementa el algoritmo evolutivo que se desea utilizar -->
+    <Class>es.udc.gii.rosamituscma.ConstrainedMotionEvolutionaryAlgorithm</Class>
+    <Comparator>es.udc.gii.common.eaf.algorithm.fitness.comparator.MinimizingFitnessComparator</Comparator>
+    <!--No hay estrategia de evaluación -->
+    <Lambda>1</Lambda>
+    <Population>
+		<!-- Tamao -->
+        <Size>20</Size>
+		<!--Configuracion del individuo -->
+        <Individual>
+            <Class>es.udc.gii.common.eaf.algorithm.population.Individual</Class>
+            <Chromosome size="2">
+            </Chromosome>
+        </Individual>
+    </Population>   
+    <!-- Configuracion de las cadenas de operadores --> 
+    <OperatorChains>
+        <ReproductionChain>
+            <Operator>
+                <Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.EvolutionaryStrategyMutation</Class>
+                <Operator>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.DEMutationOperator</Operator>
+                <MutationStrategy>
+                    <Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.mutationStrategy.NRandDEMutationStrategy</Class>
+                    <F>
+                        <Class>es.udc.gii.common.eaf.plugin.parameter.Constant</Class>
+                        <Value>0.5</Value>
+                    </F>
+                    <DiffVector>2</DiffVector>
+                </MutationStrategy>     
+                <CrossOverScheme>
+                    <Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.crossover.BinCrossOverScheme</Class>
+                    <CR>
+                <Class>es.udc.gii.common.eaf.plugin.parameter.Constant</Class>
+                <Value>0.9</Value>
+                    </CR>
+                </CrossOverScheme>
+            </Operator>
+        </ReproductionChain>
+        <ReplaceChain>
+            <Operator>
+                <Class>es.udc.gii.common.eaf.algorithm.operator.replace.EvolutionaryStrategyReplaceOperator</Class>
+            </Operator>
+        </ReplaceChain>
+    </OperatorChains>
+    <Objective>
+        <CheckBounds/>
+	</Objective>
+	<StopTests>
+         <StopTest>
+            <Class>es.udc.gii.common.eaf.stoptest.EvolveGenerationsStopTest</Class>
+            <Generations>1000000</Generations>
+        </StopTest> 
+    </StopTests>
+    <LogTool>
+        <Log>
+            <Class>es.udc.gii.common.eaf.log.BestMeanLogTool</Class>
+            <Folder>results</Folder>
+            <Name>bestmean</Name>
+        </Log>
+        <Log>
+            <Class>es.udc.gii.common.eaf.log.BestIndividualLogTool</Class>
+            <Folder>results</Folder>
+            <Name>bestind</Name>
+        </Log>
+              
+    </LogTool>
+</EvolutionaryAlgorithm>
