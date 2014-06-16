@@ -29,7 +29,7 @@ package es.udc.gii.common.eaf.log;
 
 import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.NSGA2Individual;
 import java.util.List;
 import java.util.Observable;
 

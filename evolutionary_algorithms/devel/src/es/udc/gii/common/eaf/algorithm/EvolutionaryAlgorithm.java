@@ -49,7 +49,7 @@ import org.apache.commons.configuration.Configuration;
 public abstract class EvolutionaryAlgorithm extends Observable implements Configurable {
     //Estado inicial: en el que se genera la poblacion inicial.
 
-    public final static int INIT_STATE = 0;   
+    public final static int INIT_STATE = 0;
     // Rafa: Cambio los atributos de clase a final para que sean constantes.
     //Evaluacion de la poblacion inicial:
     public final static int INIT_EVALUATE_STATE = 1;    //Antes de la seleccion:
@@ -59,6 +59,7 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
     public final static int REPLACE_STATE = 5;
     public final static int FINAL_STATE = 6;
     public final static int CLOSE_LOGS_STATE = 7;
+    public final static int PRE_EVALUATION_STATE = 8;
     protected int state;
     private Population population;
     private Population new_population;
@@ -69,8 +70,8 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
     private OperatorChain<ReplaceOperator> replaceChain;
     private OperatorChain<EvaluationOperator> evalChain;
     private Problem problem;
-    protected int generations;   
-    private int FEs = 1;    
+    protected int generations;
+    private int FEs = 1;
     private boolean finish = false;
     private int maxGenerations = 0;
     private int maxEvaluations = 0;
@@ -83,13 +84,17 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
     private boolean useCustomInitPopulation = false;
     private List<Individual> fitness_history;
     private int fitness_history_capacity = -1;
-    
+
     //27-02-2010: se implementa el método best_ever para cuando haya 
     //técnica de reemplazo que se guarde
     //el mejor individuo que se haya encontrado hasta ese momento. 
     //getBestIndividual sigue devolviendo
     //el mejor de la población, pero bestEver devuelve el mejor.
     private Individual best_ever_individual;
+
+    //04-09-2013: "debug" boolean parameter to indicate if debug messages are printed or not.
+    //false by default
+    private boolean debug = false;
 
     public EvolutionaryAlgorithm() {
     }
@@ -192,7 +197,7 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
 
             if (stopTests.get(i) instanceof FEsStopTest) {
 
-                this.maxEvaluations = Math.max(this.maxEvaluations, 
+                this.maxEvaluations = Math.max(this.maxEvaluations,
                         ((FEsStopTest) stopTests.get(i)).getFEs(this));
 
             }
@@ -224,9 +229,8 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
 
             if (stopTests.get(i) instanceof EvolveGenerationsStopTest) {
 
-                this.maxGenerations = Math.max(this.maxGenerations, 
-                        ((EvolveGenerationsStopTest) stopTests.get(i)
-                        ).getGenerations());
+                this.maxGenerations = Math.max(this.maxGenerations,
+                        ((EvolveGenerationsStopTest) stopTests.get(i)).getGenerations());
 
             }
 
@@ -250,6 +254,33 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
         return this.state;
     }
 
+    public String getStateString() {
+
+        switch (this.state) {
+            case EvolutionaryAlgorithm.INIT_STATE:
+                return "INIT_STATE";
+            case EvolutionaryAlgorithm.INIT_EVALUATE_STATE:
+                return "INIT_EVALUATE_STATE";
+            case EvolutionaryAlgorithm.SELECT_STATE:
+                return "SELECT_STATE";
+            case EvolutionaryAlgorithm.REPRODUCTION_STATE:
+                return "REPRODUCTION_STATE";
+            case EvolutionaryAlgorithm.PRE_EVALUATION_STATE:
+                return "PRE_EVALUATION_STATE";
+            case EvolutionaryAlgorithm.EVALUATE_STATE:
+                return "EVALUATE_STATE";
+            case EvolutionaryAlgorithm.REPLACE_STATE:
+                return "REPLACE_STATE";
+            case EvolutionaryAlgorithm.FINAL_STATE:
+                return "FINAL_STATE";
+            case EvolutionaryAlgorithm.CLOSE_LOGS_STATE:
+                return "CLOSE_LOGS_STATE";
+            default:
+                return "";
+        }
+
+    }
+
     public void resolve(StopTest objective, int maxGenerations) {
 
         this.maxGenerations = maxGenerations;
@@ -271,14 +302,13 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
         this.next();
 
         while (objective == null || !objective.isReach(this) /*&& !this.finish*/) {
-
             this.step();
 
         }
 
         this.next();
         this.next();
-
+        this.finish = true;
     }
 
     /*
@@ -298,13 +328,14 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
 
             case EvolutionaryAlgorithm.INIT_STATE:
                 this.init();
+                this.notifyChanges();
                 this.state = EvolutionaryAlgorithm.INIT_EVALUATE_STATE;
                 this.notifyChanges();
                 break;
             case EvolutionaryAlgorithm.INIT_EVALUATE_STATE:
                 this.evaluate(this.problem, this.getPopulation());
                 this.new_population = new Population();
-
+                this.notifyChanges();
                 this.state = EvolutionaryAlgorithm.SELECT_STATE;
                 break;
             case EvolutionaryAlgorithm.SELECT_STATE:
@@ -314,6 +345,8 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
                 break;
             case EvolutionaryAlgorithm.REPRODUCTION_STATE:
                 this.reproduce(this.new_population);
+                this.notifyChanges();
+                this.state = EvolutionaryAlgorithm.PRE_EVALUATION_STATE;
                 this.notifyChanges();
                 this.state = EvolutionaryAlgorithm.EVALUATE_STATE;
                 break;
@@ -328,17 +361,15 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
                 //Después de replace hay que comprobar el test de parada
                 this.generations++;
                 this.problem.resetObjectiveFunctions();
-                
+
                 //01 - 07 - 2011 - Añadidas las estrategias de restart, en esta 
                 //última fase de la generación se comprueban si se cumple alguna 
                 //si se cumple se aplica la estrategia de restart que es la 
                 //encargada de poner el nuevo estado del algoritmo.
-                if (this.restartTest != null && this.restartTest.isReach(this)) {
+                if (this.restartStrategy != null
+                        && this.restartTest != null && this.restartTest.isReach(this)) {
 
-                    if (this.restartStrategy != null) {
-                        this.restartStrategy.restart(this);
-                    }
-                    
+                    this.restartStrategy.restart(this);
 
                 } else if (this.stopTest == null || !this.stopTest.isReach(this)) {
                     this.state = EvolutionaryAlgorithm.SELECT_STATE;
@@ -370,9 +401,9 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
 
         do {
             this.next();
-        } while (this.state != EvolutionaryAlgorithm.SELECT_STATE && 
-                this.state != EvolutionaryAlgorithm.FINAL_STATE);
-        
+        } while (this.state != EvolutionaryAlgorithm.SELECT_STATE
+                && this.state != EvolutionaryAlgorithm.FINAL_STATE);
+
     }
 
     private void notifyChanges() {
@@ -395,9 +426,10 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
     }
 
     protected void evaluate(Problem problem, Population population) {
-        if (getEvalChain() != null && getEvalChain().getOperators() != null && 
-                !getEvalChain().getOperators().isEmpty()) {
+        if (getEvalChain() != null && getEvalChain().getOperators() != null
+                && !getEvalChain().getOperators().isEmpty()) {
             population.setIndividuals(getEvalChain().execute(this, population));
+            this.setFEs(this.getFEs() + population.getSize());
         } else if (this.getEvaluationStrategy() != null) {
             //21 - 06 - 2011 : Se añade la posibilidad de que no exista 
             //evaluación en el algoritmo.
@@ -413,8 +445,8 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
         if (this.fitness_history != null) {
 
             if (this.fitness_history.size() == this.fitness_history_capacity) {
-                this.fitness_history.set(this.getGenerations() % 
-                        this.fitness_history_capacity,
+                this.fitness_history.set(this.getGenerations()
+                        % this.fitness_history_capacity,
                         this.getBestIndividual());
             } else {
                 this.fitness_history.add(this.getBestIndividual());
@@ -479,6 +511,8 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
 
             setUseCustomInitPopulation(conf.containsKey("UseCustomRandomInitPopulation"));
 
+            setDebug(conf.containsKey("Debug"));
+
             if (conf.containsKey("FitnessHistoryCapacity")) {
                 this.fitness_history_capacity = conf.getInt("FitnessHistoryCapacity");
                 this.fitness_history = new ArrayList<Individual>();
@@ -491,6 +525,14 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
 
             System.exit(0);
         }
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     public boolean isUseCustomInitPopulation() {
@@ -538,16 +580,16 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
 
     public Individual getBestIndividual() {
 
-        BestIndividualSpecification spec =
-                new BestIndividualSpecification();
+        BestIndividualSpecification spec
+                = new BestIndividualSpecification();
 
         return spec.get(this.population.getIndividuals(), 1, this.comparator).get(0);
 
     }
 
     public Individual getWorstIndividual() {
-        WorstIndividualSpecification spec =
-                new WorstIndividualSpecification();
+        WorstIndividualSpecification spec
+                = new WorstIndividualSpecification();
 
         return spec.get(this.population.getIndividuals(), 1, this.comparator).get(0);
     }
@@ -577,12 +619,16 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
             this.best_ever_individual = this.getBestIndividual();
         } else {
             if (this.comparator.compare(this.best_ever_individual, this.getBestIndividual()) >= 1) {
-                this.best_ever_individual = (Individual)this.getBestIndividual().clone();
+                this.best_ever_individual = (Individual) this.getBestIndividual().clone();
             }
         }
     }
-    
+
     public Individual getBestEverIndividual() {
         return this.best_ever_individual;
+    }
+
+    public Population getNewPopulation() {
+        return this.new_population;
     }
 }

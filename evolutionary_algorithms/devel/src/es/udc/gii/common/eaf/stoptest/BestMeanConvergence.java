@@ -70,7 +70,7 @@ public class BestMeanConvergence extends SimpleStopTest {
         best_fitness = algorithm.getBestIndividual().getFitness();
         mean_fitness = FitnessUtil.meanFitnessValue(individuals);
 
-        convergence = (Math.abs(best_fitness - mean_fitness) / best_fitness) <= this.convergenceRate;
+        convergence = (Math.abs(best_fitness - mean_fitness)) <= this.convergenceRate;
 
         return convergence;
     }

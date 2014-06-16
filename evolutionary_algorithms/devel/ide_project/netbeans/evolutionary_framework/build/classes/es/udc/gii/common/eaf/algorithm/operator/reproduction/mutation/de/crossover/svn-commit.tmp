@@ -1,5 +1,0 @@
-* Bug corrected at Exponential Crossover scheme
-	- This bug causes no genes changed at crossover operator
---This line, and those below, will be ignored--
-
-M    ExpCrossOverScheme.java

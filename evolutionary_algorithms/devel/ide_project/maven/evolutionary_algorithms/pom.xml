@@ -17,8 +17,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -47,21 +47,11 @@
             <artifactId>commons-configuration</artifactId>
             <version>1.8</version>
         </dependency> 
-        <dependency>
-            <groupId>org.hpjava</groupId>
-            <artifactId>mpiJava</artifactId>
-            <version>1.2.5</version>
-        </dependency>
 <dependency>
 	<groupId>org.apache.commons</groupId>
 	<artifactId>commons-lang3</artifactId>
 	<version>3.1</version>
 </dependency>
-        <dependency>
-            <groupId>no.uib.cipr</groupId>
-            <artifactId>matrix-toolkits-java</artifactId>
-            <version>0.9.11</version>
-        </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
@@ -77,6 +67,17 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math</artifactId>
             <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>mpj</groupId>
+            <artifactId>mpj</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.matrix-toolkits-java</groupId>
+            <artifactId>mtj</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 </project>

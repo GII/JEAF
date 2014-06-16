@@ -37,38 +37,46 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.math.stat.StatUtils;
 
 /**
- * This class represents a CMA-ES algorithm. It is used to store the parameters that are common to
- * the elementes necesary to run it like the operators or the StopTests.<p>
- * 
- * To configure this algorithm it is necessary to indicate the following parameters. None of them are
- * mandatory, if they do not appear in the configuration file, the algorithm set them to their default
- * values with the method <i>setDefaultParameters</i>.
- * 
+ * This class represents a CMA-ES algorithm. It is used to store the parameters
+ * that are common to the elementes necesary to run it like the operators or the
+ * StopTests.<p>
+ *
+ * To configure this algorithm it is necessary to indicate the following
+ * parameters. None of them are mandatory, if they do not appear in the
+ * configuration file, the algorithm set them to their default values with the
+ * method <i>setDefaultParameters</i>.
+ *
  * <ul>
  * <li>InitialX: one or N values that indicate the initial value of xMean.</li>
- * <li>TypicalX: one or N values that indicate the initial value of typicalX used to generate the 
- * initial values of xMean.
- * <li>InitialStandardDeviation: one or N values that indicate the initial value of sigma.</li>
- * <li>Mu: an integer value that indicates the number of elements used to update the parameters of
- * the distribution that samples the population at each generation.</li>
- * <li>RecombinationType: Plugin used to generates the weights to update the distribution.</li>
+ * <li>TypicalX: one or N values that indicate the initial value of typicalX
+ * used to generate the initial values of xMean.
+ * <li>InitialStandardDeviation: one or N values that indicate the initial value
+ * of sigma.</li>
+ * <li>Mu: an integer value that indicates the number of elements used to update
+ * the parameters of the distribution that samples the population at each
+ * generation.</li>
+ * <li>RecombinationType: Plugin used to generates the weights to update the
+ * distribution.</li>
  * <li>Cs: step-size cumulation parameter.</li>
  * <li>Damps: step-size damping parameter.</li>
- * <li>DiagonalCovarianceMatrix: an integer value which indicates the number of initial iterations
- * with diagonal covariance matrix, where 1 means always, -1 means default value 150*N/lambda 
- * and 0 means never.</li>
+ * <li>DiagonalCovarianceMatrix: an integer value which indicates the number of
+ * initial iterations with diagonal covariance matrix, where 1 means always, -1
+ * means default value 150*N/lambda and 0 means never.</li>
  * </ul>
  * where N is the dimension of the problem.<p>
- * 
- * As a subclass of EvolutionaryStratety, it is also necessary to indicate the value of the parameters
- * <i>Lambda</i>. Again, it is not necessary to specified its value, in this case the default value
- * is used. 
- * 
- * 
- * See <a href = "http://www.lri.fr/~hansen/cmaesintro.html">http://www.lri.fr/~hansen/cmaesintro.html</a>
+ *
+ * As a subclass of EvolutionaryStratety, it is also necessary to indicate the
+ * value of the parameters
+ * <i>Lambda</i>. Again, it is not necessary to specified its value, in this
+ * case the default value is used.
+ *
+ *
+ * See <a href =
+ * "http://www.lri.fr/~hansen/cmaesintro.html">http://www.lri.fr/~hansen/cmaesintro.html</a>
  * for more information.
- * 
- * @author Grupo Integrado de Ingeniería (<a href="http://www.gii.udc.es">www.gii.udc.es</a>)
+ *
+ * @author Grupo Integrado de Ingeniería (<a
+ * href="http://www.gii.udc.es">www.gii.udc.es</a>)
  * @since 1.0
  */
 public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
@@ -85,8 +93,8 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
     private double ccovsep = -1;
     private double chiN = -1;
     /**
-     * Dimension of the problem to be solved, it is a class variable because most of the methods use
-     * it.
+     * Dimension of the problem to be solved, it is a class variable because
+     * most of the methods use it.
      */
     private int N;
     private double[] diagD;
@@ -217,7 +225,6 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
 
     }
 
-   
     @Override
     protected void init() {
 
@@ -266,7 +273,7 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
             } else if (startsigma.length == N) {
 
                 this.sigma = StatUtils.max(startsigma);
-                if (this.sigma <= 0.0) {
+                if (this.isDebug() && this.sigma <= 0.0) {
                     System.err.println("WARNING - Initial Standard Deviation sigma must be positive");
 
                 }
@@ -278,14 +285,18 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
                 assert false;
             }
         } else {
-            System.err.println("WARNING - no inital standard deviation specified or use "
-                    + "setInitialStandardDeviation()");
+            if (this.isDebug()) {
+                System.err.println("WARNING - no inital standard deviation specified or use "
+                        + "setInitialStandardDeviation()");
+            }
             this.sigma = 0.5;
         }
 
-        if (this.sigma <= 0.0 || StatUtils.min(diagD) <= 0.0) {
-            System.err.println("WARNING - initial standard deviation no specified or non-positive,"
-                    + "useSetInitialStandardDeviation()");
+        if ((this.sigma <= 0.0 || StatUtils.min(diagD) <= 0.0)) {
+            if (this.isDebug()) {
+                System.err.println("WARNING - initial standard deviation no specified or non-positive,"
+                        + "useSetInitialStandardDeviation()");
+            }
             this.sigma = 1.0;
 
         }
@@ -325,7 +336,9 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
                 }
             } else if (this.getProblem().isCheckBounds()) {
 
-                System.err.println("WARNING - No initial search point (solution) X or typical X specified");
+                if (this.isDebug()) {
+                    System.err.println("WARNING - No initial search point (solution) X or typical X specified");
+                }
                 xMean = new double[N];
                 for (int i = 0; i < N; i++) {
 
@@ -341,7 +354,9 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
                 }
 
             } else {
-                System.err.println("WARNING - No initial search point (solution) or typical X specidied");
+                if (this.isDebug()) {
+                    System.err.println("WARNING - No initial search point (solution) or typical X specidied");
+                }
                 xMean = new double[N];
                 for (int i = 0; i < N; i++) {
                     xMean[i] = EAFRandom.nextDouble();
@@ -400,7 +415,7 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
         //set parameters to its default values if they were not set before:
         if (this.getLambda() <= 0) {
             this.setLambda((int) (4.0 + 3.0 * Math.log(N)));
-        } 
+        }
         this.setPopulationSize(this.getLambda());
 
         if (this.mu <= 0) {
@@ -433,7 +448,7 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
 
         if (this.cc <= 0.0) {
             this.cc = 4.0 / (N + 4.0);
-            
+
         }
 
         if (this.mucov < 0.0) {
@@ -449,10 +464,12 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
 
     /**
      * This is an auxiliar method used to increase the size of an array.
+     *
      * @param x The initial array.
      * @param dim the new dimension of the array.
-     * @return An array of size <i>dim</i> where the all the elements are equal x[0] if x.length &le; dim
-     * the same array x, if x.lenght == dim, or null if x is null.
+     * @return An array of size <i>dim</i> where the all the elements are equal
+     * x[0] if x.length &le; dim the same array x, if x.lenght == dim, or null
+     * if x is null.
      */
     private double[] expandToDimension(double[] x, int dim) {
         if (x == null) {
@@ -462,17 +479,22 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
             return x;
         }
         if (x.length != 1) {
-            System.err.println("ERROR - x must have length one or length dimension");
+            if (this.isDebug()) {
+                System.err.println("ERROR - x must have length one or length dimension");
+            }
         }
 
         return getArrayOf(x[0], dim);
     }
 
     /**
-     * This method returns an array with dim elements, all of them with the same value.
+     * This method returns an array with dim elements, all of them with the same
+     * value.
+     *
      * @param x value to copy into the array.
      * @param dim the dimension of the returned array.
-     * @return an array with <i>dim</i> elements where all the values are equal to x.
+     * @return an array with <i>dim</i> elements where all the values are equal
+     * to x.
      */
     private double[] getArrayOf(double x, int dim) {
         double[] res = new double[dim];
@@ -483,7 +505,6 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
     }
 
     //Getters and setters.
-    
     public double[] getStartSigma() {
         return this.startsigma;
     }
@@ -553,8 +574,9 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
     }
 
     public double getCcov() {
-        if (this.getFlgDiag())
+        if (this.getFlgDiag()) {
             return this.ccovsep;
+        }
         return this.ccov;
     }
 
@@ -612,6 +634,4 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
         super.setPopulationSize(new_pop_size);
         this.setLambda(new_pop_size);
     }
-    
-    
 }

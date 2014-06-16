@@ -16,7 +16,7 @@
  */
 package es.udc.gii.common.eaf.algorithm.fitness.comparator;
 
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.NSGA2Individual;
 
 /**
  * Implements the crowding comparison operator.<p/>

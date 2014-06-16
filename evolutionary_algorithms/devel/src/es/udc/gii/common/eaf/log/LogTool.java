@@ -166,5 +166,9 @@ public abstract class LogTool implements Observer, Configurable {
     protected void finalize() throws Throwable {
         super.finalize();
         getLog().close();
-    }        
+    } 
+    
+    public void setDoCreateFile(boolean doCreateFile) {
+        this.doCreateFile = doCreateFile;
+    }
 }

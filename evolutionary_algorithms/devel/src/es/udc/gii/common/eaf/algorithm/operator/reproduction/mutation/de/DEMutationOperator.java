@@ -158,7 +158,8 @@ public class DEMutationOperator extends MutationOperator {
         //quien pasa a la siguiente generación:
 
         trial = this.crossOverScheme.crossOver(algorithm, target, base);
-
+        trial.setFitness(-Double.MAX_VALUE);
+        
         mutated_individual.add(trial);
         return mutated_individual;
         

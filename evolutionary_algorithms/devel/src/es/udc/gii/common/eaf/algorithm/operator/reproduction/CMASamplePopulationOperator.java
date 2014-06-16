@@ -30,7 +30,8 @@ import org.apache.commons.math.stat.StatUtils;
 
 /**
  *
- * @author Grupo Integrado de Ingeniería (<a href="www.gii.udc.es">www.gii.udc.es</a>)
+ * @author Grupo Integrado de Ingeniería (<a
+ * href="www.gii.udc.es">www.gii.udc.es</a>)
  */
 public class CMASamplePopulationOperator extends ReproductionOperator {
 
@@ -40,6 +41,7 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
     private double[] lowerStandardDeviation;
     private double[] upperStandardDeviation;
     private int countCUpdatesSinceEigenupdate = 0;
+    private boolean debug = false;
 
     @Override
     public void configure(Configuration conf) {
@@ -70,6 +72,7 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
 
         List<Individual> new_population = new ArrayList<Individual>(individuals.size());
         CMAEvolutionaryAlgorithm alg = (CMAEvolutionaryAlgorithm) algorithm;
+        debug = algorithm.isDebug();
 
         double[] chromosome;
 
@@ -175,8 +178,6 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
 
     }
 
-
-
     private void eidgendecomposition(CMAEvolutionaryAlgorithm algorithm, int N, int flgforce) {
 
         if (countCUpdatesSinceEigenupdate == 0 && flgforce < 2) {
@@ -209,7 +210,9 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
 
             for (int i = 0; i < N; i++) {
                 if (algorithm.getDiag()[i] < 0.0) {
-                    System.err.println("ERROR - An eigenvalue has become negative.");
+                    if (algorithm.isDebug()) {
+                        System.err.println("ERROR - An eigenvalue has become negative.");
+                    }
                 }
                 algorithm.getDiag()[i] = Math.sqrt(algorithm.getDiag()[i]);
             }
@@ -251,12 +254,17 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
                      * quite large
                      */
                     s = " " + i + " " + j + " " + cc + " " + C[i > j ? i : j][i > j ? j : i] + " " + (cc - C[i > j ? i : j][i > j ? j : i]);
-                    System.err.println("WARNING - cmaes_t:Eigen(): imprecise result detected " + s);
+                    if (debug) {
+                        System.err.println("WARNING - cmaes_t:Eigen(): imprecise result detected " + s);
+                    }
                     ++res;
                 }
                 if (Math.abs(dd - (i == j ? 1 : 0)) > 1e-10) {
                     s = i + " " + j + " " + dd;
-                    System.err.println("WARNING - cmaes_t:Eigen(): imprecise result detected (Q not orthog.) " + s);
+                    if (debug) {
+                        System.err.println("WARNING - cmaes_t:Eigen(): imprecise result detected (Q not orthog.) " + s);
+                    }
+
                     ++res;
                 }
             }
@@ -279,8 +287,11 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
         if (algorithm.getGenerations() > 1) {
             if (individuals.get(0).getFitness() == individuals.get((int) Math.min(algorithm.getLambda() - 1,
                     algorithm.getLambda() / 2.0 + 1)).getFitness()) {
-                System.err.println("WARNING - Flat fitness landscape, consider reformulation of fitness,"
-                        + "step-size increased");
+                if (debug) {
+                    System.err.println("WARNING - Flat fitness landscape, consider reformulation of fitness,"
+                            + "step-size increased");
+                }
+
                 algorithm.setSigma(algorithm.getSigma() * Math.exp((0.2 + algorithm.getCs() / algorithm.getDamps())));
             }
         }

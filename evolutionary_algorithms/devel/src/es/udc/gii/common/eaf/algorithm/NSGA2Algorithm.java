@@ -25,12 +25,14 @@
 package es.udc.gii.common.eaf.algorithm;
 
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
 import es.udc.gii.common.eaf.algorithm.population.Population;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.MultiobjectiveIndividual;
 import es.udc.gii.common.eaf.exception.WrongIndividualException;
 import es.udc.gii.common.eaf.plugin.multiobjective.NSGA2Ranking;
 import es.udc.gii.common.eaf.plugin.multiobjective.crowding.Crowding;
 import es.udc.gii.common.eaf.plugin.multiobjective.crowding.ObjectiveSpaceCrowding;
+import es.udc.gii.common.eaf.plugin.multiobjective.individual.MultiobjectiveIndividualParametersPlugin;
+import es.udc.gii.common.eaf.plugin.multiobjective.individual.NSGA2IndividualParametersPlugin;
 import es.udc.gii.common.eaf.problem.Problem;
 import es.udc.gii.common.eaf.util.ConfWarning;
 import java.util.ArrayList;
@@ -48,14 +50,14 @@ import org.apache.commons.configuration.Configuration;
  *
  * Configuration example:
  * <pre>
- * &lt;Crowding&gt;
- *    &lt;Class&gt; ... &lt;/Class&gt;
- *    ...
- * &lt;/Crowding&gt;
  * &lt;Ranking&gt;
  *    &lt;Class&gt; ... &lt;/Class&gt;
  *    ...
  * &lt;/Ranking&gt;
+ * &lt;ParametersPlugin&gt;
+ *    &lt;Class&gt; ... &lt;/Class&gt;
+ *    ...
+ * &lt;/ParametersPlugin&gt;
  * </pre>
  *
  * {@code Crowding} must be an instance of {@link Crowding} and {@code Ranking}
@@ -66,24 +68,30 @@ import org.apache.commons.configuration.Configuration;
  */
 public class NSGA2Algorithm extends EvolutionaryAlgorithm {
 
-    private Crowding crowding = null;
-    private NSGA2Ranking ranking = null;
+    
+    private MultiobjectiveIndividualParametersPlugin parametersPlugin = null;
+    
+    private NSGA2Ranking ranking = new NSGA2Ranking();
+    
+    private int nFronts;
 
     public NSGA2Algorithm() {
+        
     }
 
     @Override
     public void configure(Configuration conf) {
         super.configure(conf);
         try {
-            if (conf.containsKey("Crowding.Class")) {
-                this.setCrowding((Crowding) Class.forName(conf.getString("Crowding.Class")).newInstance());
-                this.getCrowding().configure(conf);
+            
+            if (conf.containsKey("ParametersPlugin.Class")) {
+                this.parametersPlugin = ((MultiobjectiveIndividualParametersPlugin)
+                        (Class.forName(conf.getString("ParametersPlugin.Class"))).newInstance());
+                this.parametersPlugin.configure(conf.subset("ParametersPlugin"));
             } else {
-                this.setCrowding(new ObjectiveSpaceCrowding());
-                (new ConfWarning("Crowding", "ObjectiveSpaceCrowding")).warn();
+                this.parametersPlugin = new NSGA2IndividualParametersPlugin();
+                (new ConfWarning("ParametersPlugin", parametersPlugin.getClass().getCanonicalName())).warn();
             }
-
             if (conf.containsKey("Ranking.Class")) {
                 this.setRanking((NSGA2Ranking) Class.forName(conf.getString("Ranking.Class")).newInstance());
                 this.getRanking().configure(conf);
@@ -106,18 +114,17 @@ public class NSGA2Algorithm extends EvolutionaryAlgorithm {
         if (this.state == INIT_EVALUATE_STATE) {
             List<Individual> pop = population.getIndividuals();
 
-            getRanking().calculate(pop);
-
-            List<NSGA2Individual> popNSGA2 =
-                    new ArrayList<NSGA2Individual>(pop.size());
+            List<MultiobjectiveIndividual> popNSGA2 =
+                    new ArrayList<MultiobjectiveIndividual>(pop.size());
 
             for (Individual ind : pop) {
-                assert ind instanceof NSGA2Individual :
-                        "NSGA2Algorithm: Not a NSGA2Individual";
-                popNSGA2.add((NSGA2Individual) ind);
+                assert ind instanceof MultiobjectiveIndividual :
+                        "MultiobjectiveIndividual: Not a MultiobjectiveIndividual";
+                popNSGA2.add((MultiobjectiveIndividual) ind);
             }
-
-            getCrowding().calculate(popNSGA2);
+            this.nFronts = this.ranking.calculate(popNSGA2);
+            this.parametersPlugin.calculateParameters(popNSGA2);
+            
         }
     }
 
@@ -125,12 +132,20 @@ public class NSGA2Algorithm extends EvolutionaryAlgorithm {
     public void setPopulation(Population population) {
         Individual individual = population.getIndividual(0);
 
-        if (individual instanceof NSGA2Individual) {
+        if (individual instanceof MultiobjectiveIndividual) {
             super.setPopulation(population);
         } else {
-            throw new WrongIndividualException(NSGA2Individual.class,
+            throw new WrongIndividualException(MultiobjectiveIndividual.class,
                     individual.getClass());
         }
+    }
+    
+    public NSGA2Ranking getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(NSGA2Ranking ranking) {
+        this.ranking = ranking;
     }
 
     @Override
@@ -138,33 +153,16 @@ public class NSGA2Algorithm extends EvolutionaryAlgorithm {
         return "NSGA2";
     }
 
-    /**
-     * @return The crowding plugin used for computing the crowding distances.
-     */
-    public Crowding getCrowding() {
-        return crowding;
+    public MultiobjectiveIndividualParametersPlugin getParametersPlugin() {
+        return parametersPlugin;
     }
 
-    /**
-     * Sets the crowding plugin for computing the crowding distances.
-     * @param crowding The new crowding plugin.
-     */
-    public void setCrowding(Crowding crowding) {
-        this.crowding = crowding;
+    public void setParametersPlugin(MultiobjectiveIndividualParametersPlugin parametersPlugin) {
+        this.parametersPlugin = parametersPlugin;
     }
 
-    /**
-     * @return The plugin used for calculating the rank of each individual.
-     */
-    public NSGA2Ranking getRanking() {
-        return ranking;
+    public int getNFronts() {
+        return this.nFronts;
     }
-
-    /**
-     * Sets the plugin used for calculating the rank of each individual.
-     * @param ranking The new ranking plugin.
-     */
-    public void setRanking(NSGA2Ranking ranking) {
-        this.ranking = ranking;
-    }
+    
 }

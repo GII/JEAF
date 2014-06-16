@@ -23,7 +23,7 @@
 package es.udc.gii.common.eaf.plugin.multiobjective;
 
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.MultiobjectiveIndividual;
 import es.udc.gii.common.eaf.exception.WrongIndividualException;
 import es.udc.gii.common.eaf.plugin.Plugin;
 import es.udc.gii.common.eaf.util.MOUtil;
@@ -44,7 +44,7 @@ import org.apache.commons.configuration.Configuration;
  * @since 1.0
  *
  */
-public class NSGA2Ranking implements Plugin {
+public class NSGA2Ranking<T extends MultiobjectiveIndividual> implements Plugin {
 
     /**
      * Calculates the rank (front index) of each individual in a list.
@@ -52,28 +52,28 @@ public class NSGA2Ranking implements Plugin {
      * @param list - List of individuals.
      * @return The number of fronts found.
      */
-    public int calculate(List<Individual> list) {
+    public int calculate(List<T> list) {
 
         /* Checks */
         if (list == null || list.isEmpty()) {
             return 0;
         }
 
-        if (!(list.get(0) instanceof NSGA2Individual)) {
-            throw new WrongIndividualException(NSGA2Individual.class,
+        if (!(list.get(0) instanceof MultiobjectiveIndividual)) {
+            throw new WrongIndividualException(MultiobjectiveIndividual.class,
                     list.get(0).getClass());
         }
 
         /* The current front. */
-        List<NSGA2Individual> front =
-                new ArrayList<NSGA2Individual>(list.size());
+        List<MultiobjectiveIndividual> front =
+                new ArrayList<MultiobjectiveIndividual>(list.size());
 
         /* The current rank of the front. */
         int rank = 0;
 
         /* Reset individuals. */
         for (Individual i : list) {
-            NSGA2Individual ni = (NSGA2Individual) i;
+            MultiobjectiveIndividual ni = (MultiobjectiveIndividual) i;
             ni.clearDominatedIndividuals();
             ni.setRank(Integer.MAX_VALUE);
             ni.setDominationCount(0);
@@ -88,13 +88,13 @@ public class NSGA2Ranking implements Plugin {
         /* For each individual. */
         for (int p = 0; p < list.size(); p++) {
             /* Get the individual. */
-            NSGA2Individual indP = (NSGA2Individual) list.get(p);
+            MultiobjectiveIndividual indP = (MultiobjectiveIndividual) list.get(p);
 
             /* For all other individuals that have not been considered 
              * until now. */
             for (int q = p + 1; q < list.size(); q++) {
                 /* Get that individual. */
-                NSGA2Individual indQ = (NSGA2Individual) list.get(q);
+                MultiobjectiveIndividual indQ = (MultiobjectiveIndividual) list.get(q);
 
                 /* Check their dominance. */
                 int dominance = MOUtil.checkDominanceConstraints(indP, indQ);
@@ -140,8 +140,8 @@ public class NSGA2Ranking implements Plugin {
         }
 
         /* The next front. */
-        List<NSGA2Individual> newFront =
-                new ArrayList<NSGA2Individual>(front.size());
+        List<MultiobjectiveIndividual> newFront =
+                new ArrayList<MultiobjectiveIndividual>(front.size());
 
         /* Increase rank counter. */
         rank++;
@@ -153,17 +153,17 @@ public class NSGA2Ranking implements Plugin {
             for (int p = 0; p < front.size(); p++) {
 
                 /* Get that individual. */
-                NSGA2Individual indP = front.get(p);
+                MultiobjectiveIndividual indP = front.get(p);
 
                 /* Get dominated individuals. */
-                List<NSGA2Individual> dominated =
+                List<MultiobjectiveIndividual> dominated =
                         indP.getDominatedIndividuals();
 
                 /* For each dominated individual. */
                 for (int q = 0; q < dominated.size(); q++) {
 
                     /* Get it. */
-                    NSGA2Individual indQ = dominated.get(q);
+                    MultiobjectiveIndividual indQ = (MultiobjectiveIndividual)dominated.get(q);
 
                     /* Decrease its domination count. */
                     indQ.decreaseDominationCount();

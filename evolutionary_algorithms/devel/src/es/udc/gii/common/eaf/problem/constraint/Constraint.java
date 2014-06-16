@@ -56,6 +56,10 @@ public abstract class Constraint implements Configurable {
     public double getConstraintValue() {
         return this.constraint_value;
     }
+    
+    public void setConstraintValue(double constraintValue) {
+        this.constraint_value = constraintValue;
+    }
 
     @Override
     public void configure(Configuration conf) {

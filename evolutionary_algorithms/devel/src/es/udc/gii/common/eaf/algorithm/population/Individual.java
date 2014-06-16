@@ -303,7 +303,12 @@ public class Individual implements Cloneable, Configurable, Externalizable {
      * Generates the chromosomes of the Individual with values in [-1.0,1.0]
      */
     public void generate() {
-
+        
+        if (this.chromosomes == null) {
+            this.chromosomes = new DoubleArray[1];
+            this.chromosomes[0] = new ResizableDoubleArray(this.getDimension());
+        }
+        
         for (int i = 0; i < this.chromosomes.length; i++) {
 
             for (int j = 0; j < this.chromosomes[i].getNumElements(); j++) {

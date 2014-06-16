@@ -33,6 +33,7 @@ public class ThreadEvolutionaryAlgorithm extends Thread {
 
         this.ea = ea;
         this.stop_test = stop_test;
+        
     }
 
     @Override

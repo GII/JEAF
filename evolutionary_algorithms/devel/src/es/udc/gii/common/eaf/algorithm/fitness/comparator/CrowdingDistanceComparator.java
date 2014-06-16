@@ -17,7 +17,7 @@
 
 package es.udc.gii.common.eaf.algorithm.fitness.comparator;
 
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.NSGA2Individual;
 
 /**
  * This class implements a comparator for comparing two instances i1 and i2 of

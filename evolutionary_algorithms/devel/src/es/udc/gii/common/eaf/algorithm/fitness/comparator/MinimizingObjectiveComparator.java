@@ -47,6 +47,7 @@ public class MinimizingObjectiveComparator<T extends Individual>
     public MinimizingObjectiveComparator() {
         this.objectiveIndex = 0;
     }
+    
 
     /**
      * Compares one single objective value of two individuals. Which objective

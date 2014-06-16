@@ -23,7 +23,7 @@
 package es.udc.gii.common.eaf.plugin.multiobjective.crowding;
 
 import es.udc.gii.common.eaf.algorithm.fitness.comparator.MinimizingObjectiveComparator;
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.NSGA2Individual;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
@@ -37,7 +37,7 @@ import org.apache.commons.configuration.Configuration;
  * @author Grupo Integrado de Ingeniería (<a href="http://www.gii.udc.es">www.gii.udc.es</a>)
  * @since 1.0
  */
-public class ObjectiveSpaceCrowding extends Crowding {
+public class ObjectiveSpaceCrowding extends Crowding<NSGA2Individual> {
 
     public ObjectiveSpaceCrowding() {
     }
@@ -66,8 +66,12 @@ public class ObjectiveSpaceCrowding extends Crowding {
             comparator.setObjectiveIndex(obj);
 
             /* Sort individuals considering the objective above. */
-            Collections.sort(list, comparator);
-
+            try {
+                Collections.sort(list, comparator);
+            } catch (IllegalArgumentException ex) {
+                System.out.println(list.get(0).getClass().getSimpleName());
+                ex.printStackTrace();
+            }
             /* Individuals on the boundaries have maximal crowding distance. */
             NSGA2Individual firstInd = list.get(0);
             firstInd.setCrowdingDistance(Double.MAX_VALUE);

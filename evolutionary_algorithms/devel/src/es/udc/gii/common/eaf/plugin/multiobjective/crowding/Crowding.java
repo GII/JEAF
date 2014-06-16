@@ -22,7 +22,8 @@
  */
 package es.udc.gii.common.eaf.plugin.multiobjective.crowding;
 
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.MultiobjectiveIndividual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.NSGA2Individual;
 import es.udc.gii.common.eaf.plugin.Plugin;
 import java.util.List;
 
@@ -34,16 +35,25 @@ import java.util.List;
  * @author Grupo Integrado de Ingeniería (<a href="http://www.gii.udc.es">www.gii.udc.es</a>)
  * @since 1.0
  */
-public abstract class Crowding implements Plugin {
+public abstract class Crowding<T extends MultiobjectiveIndividual> implements Plugin {
 
     /**
      * Resets the crowding distance of each individual to cero.
      * @param list - List of individuals.
      */
-    public void resetCrowdingDistance(List<NSGA2Individual> list) {
+    public void resetCrowdingDistance(List<T> list) {
+        
+       
+        
         if (list != null && !list.isEmpty()) {
-            for (NSGA2Individual i : list) {
-                i.setCrowdingDistance(0.0d);
+            
+            
+            for (T i : list) {
+                
+                assert i instanceof NSGA2Individual :
+                        "NSGA2Algorithm: Not a NSGA2Individual";
+                
+                ((NSGA2Individual)i).setCrowdingDistance(0.0d);
             }
         }
     }
@@ -53,7 +63,7 @@ public abstract class Crowding implements Plugin {
      * individuals.
      * @param list - List of individuals.
      */
-    public abstract void calculate(List<NSGA2Individual> list);
+    public abstract void calculate(List<T> list);
 
     @Override
     public String toString() {

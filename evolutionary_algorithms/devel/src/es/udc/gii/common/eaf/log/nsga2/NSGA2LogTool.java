@@ -21,7 +21,7 @@
 package es.udc.gii.common.eaf.log.nsga2;
 
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import es.udc.gii.common.eaf.algorithm.population.NSGA2Individual;
+import es.udc.gii.common.eaf.algorithm.population.multiobjective.NSGA2Individual;
 import es.udc.gii.common.eaf.exception.WrongIndividualException;
 import es.udc.gii.common.eaf.log.LogTool;
 import java.util.ArrayList;
