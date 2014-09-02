@@ -32,6 +32,8 @@ public class CMAUpdateDistributionOperator extends SelectionOperator {
 
     private double[] xOld;
     private double[] BDz;
+    
+    private boolean iniphase = false;
 
     @Override
     public List<Individual> operate(EvolutionaryAlgorithm algorithm,
@@ -59,7 +61,7 @@ public class CMAUpdateDistributionOperator extends SelectionOperator {
         }
 
         /*
-         * Calculate xmean and BDz~N(0,1):
+         * Calculate xmean and BDz~N(0,C):
          */
         for (int i = 0; i < N; i++) {
 
@@ -156,7 +158,7 @@ public class CMAUpdateDistributionOperator extends SelectionOperator {
         }
 
 
-        boolean iniphase = true;
+        
 
         if (iniphase && alg.getGenerations() > Math.min(1 / alg.getCs(), 1 + N / alg.getMucov())) {
             if (psxps / alg.getDamps() / (1.0 - Math.pow((1.0 - alg.getCs()), alg.getGenerations())) < N * 1.05) {
@@ -169,6 +171,7 @@ public class CMAUpdateDistributionOperator extends SelectionOperator {
          */
         if (alg.getCcov() > 0.0 && iniphase == false) {
 
+            alg.setCountCupdatesSinceEigenupdate(alg.getCountCupdatesSinceEigenupdate()+1);
             /*
              * Update of covariance matrix
              */

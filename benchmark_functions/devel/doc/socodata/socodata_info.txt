@@ -1,0 +1,19 @@
+This folder contains the data for the benchmark function of the "SOCO Special Issue on Large Scale Continuous Optimization Problems"
+
+M. Lozano, F. Herrera, D. Molina (Eds.). Scalability of Evolutionary Algorithms and other Metaheuristics for Large Scale Continuous Optimization Problems. Soft Computing 2011.
+
+Experimental Framework
+- A set of 19 scalable function optimization problems were provided:
+		* 6 Funcionts: F1-F6 of the CEC'2008 test suite. A detailled description may be found in: K. Tang, X. 		Yao, P. N. Suganthan, C. MacNish, Y. P. Chen, C. M. Chen, and Z. Yang. Benchmark Functions for the 			CEC'2008 Special Session and Competition on Large Scale Global Optimization. Technical Report, Nature 		Inspired Computation and Applications Laboratory, USTC, China, 2007. (Source code).
+		* 5 Shifted Functions: Schwefel’s Problem 2.22 (F7), Schwefel’s Problem 1.2 (F8), Extended f10 (F9), 		Bohachevsky (F10), and Schaffer (F11). (Description) (Source code).
+		* 8 Hybrid Composition Functions (F12-F19*): They are non-separable functions built by combining two 		functions belonging to the set of functions F1-F11 (Description) (Source code).
+
+Document with a complete description of the 19 test functions: Description F1-F19*
+
+- Each algorithm is run 25 times for each test function.
+- The performance measures that were provided are:
+		* Average of error of the best individuals found in the 25 runs. For a solution x, the error measure 		is defined as: f(x)-f(op), where op is the optimum of the function.
+		* Maximum error achieved in the 25 runs.
+		* Minimum error achieved in the 25 runs.
+		* Median of the error achieved in the 25 runs.
+		* The study was made with dimensions D = 50, D = 100, D=200, D=500, and D = 1,000. The maximum number 		of fitness evaluations is 5,000·D. Each run stops when the maximal number of evaluations is achieved.

@@ -178,6 +178,14 @@ public abstract class EvolutionaryAlgorithm extends Observable implements Config
         return this.maxEvaluations;
     }
 
+    protected void setMaxEvaluations(int evaluations) {
+        this.maxEvaluations = evaluations;
+    }
+    
+    protected void setMaxGenerations(int generations) {
+        this.maxGenerations = (int) generations;
+    }
+    
     protected void setMaxEvaluations(StopTest objective) {
 
         List<StopTest> stopTests;

@@ -75,14 +75,15 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
         debug = algorithm.isDebug();
 
         double[] chromosome;
-
+        
         int N = individuals.get(0).getDimension();
 
+        countCUpdatesSinceEigenupdate = alg.getCountCupdatesSinceEigenupdate();
         //latest possibility to generate B and diagD:
         eidgendecomposition(alg, N, 0);
 
 
-
+        
         //ensure minimal and maximal standard deviation:
         double minsqrtdiagC = Math.sqrt(StatUtils.min(alg.diag(alg.getC())));
         double maxsqrtdiagC = Math.sqrt(StatUtils.max(alg.diag(alg.getC())));
@@ -139,7 +140,7 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
 
                     chromosome[i] =
                             this.checkBounds(alg,
-                            alg.getxMean()[i] + alg.getSigma() * alg.getDiag()[i] * EAFRandom.nextGaussian());
+                            alg.getxMean()[i] + alg.getSigma() * alg.getDiag()[i] * EAFRandom.nextGaussian()) ;
 
                 }
 
@@ -193,12 +194,13 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
             for (int i = 0; i < N; i++) {
                 algorithm.getDiag()[i] = Math.sqrt(algorithm.getC()[i][i]);
             }
+            algorithm.setCountCupdatesSinceEigenupdate(0);
 
         } else {
             // set B <- C
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j <= i; j++) {
-                    algorithm.getB()[i][j] = algorithm.getB()[i][i] = algorithm.getC()[i][i];
+                    algorithm.getB()[i][j] = algorithm.getB()[j][i] = algorithm.getC()[i][j];
                 }
             }
 
@@ -216,6 +218,7 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
                 }
                 algorithm.getDiag()[i] = Math.sqrt(algorithm.getDiag()[i]);
             }
+            algorithm.setCountCupdatesSinceEigenupdate(0);
         }
 
         /*
@@ -284,9 +287,9 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
          */
         Collections.sort(individuals, algorithm.getComparator());
 
-        if (algorithm.getGenerations() > 1) {
+        if (algorithm.getGenerations() > 0) {
             if (individuals.get(0).getFitness() == individuals.get((int) Math.min(algorithm.getLambda() - 1,
-                    algorithm.getLambda() / 2.0 + 1)).getFitness()) {
+                    algorithm.getLambda() / 2.0 + 1) - 1).getFitness()) {
                 if (debug) {
                     System.err.println("WARNING - Flat fitness landscape, consider reformulation of fitness,"
                             + "step-size increased");
@@ -317,7 +320,7 @@ public class CMASamplePopulationOperator extends ReproductionOperator {
             algorithm.setSigma(algorithm.getSigma() / fac);
             for (int i = 0; i < N; i++) {
                 algorithm.getPc()[i] *= fac;
-                algorithm.getDiag()[i] += fac;
+                algorithm.getDiag()[i] *= fac;
                 for (int j = 0; j <= i; j++) {
                     algorithm.getC()[i][j] *= fac * fac;
                 }

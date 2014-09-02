@@ -1,0 +1,95 @@
+Instructions
+1.The complete set of functions may be found in the following C source code: fsuite.c and should be compiled as follows: 
+
+for linux:  
+  gcc -c fsuite.c
+  ld -o fsuite.so -shared fsuite.o
+
+for windows:
+  gcc -c fsuite.c -DWINDOWS
+  dllwrap -o fsuite.dll fsuite.o
+
+We recommend the GCC compiler native in Linux and available for Windows from here www.mingw.org.
+Binary versions are also directly available from here: fsuite.dll (Windows) or as fsuite.so (Linux Intel binary). 
+----------------------------------------------------------------------------------------------------------------------
+
+2.MATLAB: wrapper
+All of the function can be accessed directly from MATLAB using the following wrapper MEX file: mfsuite.c, which is compiled as follows  within MATLAB:
+
+for linux: 
+  mex mfsuite.c
+
+for windows:
+  mex mfsuite.c -DWINDOWS
+
+For windows we recommended using the LCC compiler that comes default with MATLAB. 
+
+Usage: 
+f = mfsuite(x, n_obj, func_name);
+Input:
+ x:  the input variables (1*D vector) ; 
+n_obj: the number of objectives;
+func_name: the name of the funtion. 
+
+Output:  the objective function values f (1*n_obj vector)
+
+Example:
+x = rand(1,3);
+f = mfsuite(x, 2, 'OKA2');
+>> f
+f =
+    0.3152    2.1396
+
+-------------------------------------------------------------------------------------------------------------------------
+
+3. C/C++: loading the DLL library or shared object
+An example of this is actually given in the MATLAB wrapper above. 
+
+In general you must modify your code as follows: 
+
+Add the following to your header: 
+For windows:
+
+#include <windows.h>
+#include <process.h>
+typedef void (WINAPI * PPROC) (double *, double *, int, int);
+#define LIBHANDLE HANDLE
+#define GetProcedure GetProcAddress
+#define CloseDynalink FreeLibrary
+
+For Linux:
+
+#include <dlfcn.h>
+#include <pthread.h>
+typedef void (*PPROC) (double *, double *, int, int);
+#define LIBHANDLE void *
+#define GetProcedure dlsym
+#define CloseDynalink dlclose
+
+Define the variables:
+  PPROC pfcn;
+  LIBHANDLE hLibrary;
+
+Now to call the function you must load the library fsuite and get a pointer to the procedure, for Windows:
+  hLibrary = LoadLibrary ("fsuite.dll");
+  pfcn = (PPROC) GetProcedure (hLibrary, "OKA2"); 
+
+and Linux:
+  hLibrary = dlopen ("./fsuite.so", RTLD_NOW);
+  pfcn = (PPROC) GetProcedure (hLibrary, "OKA2"); 
+
+now the test function may be called as follows:
+
+  pfcn (x, f, n, n_obj);
+
+where n is the number of variables, n_obj is the number of objective functions, and f is the objective function values. The function will return the values f.
+
+Finally close the library like this:
+
+  CloseDynalink (hLibrary);
+
+
+Compiling your code:
+
+Windows: nothing special.
+Linux: used the flag -ldl

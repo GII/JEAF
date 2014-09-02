@@ -26,6 +26,7 @@ package es.udc.gii.common.eaf.algorithm;
 
 import es.udc.gii.common.eaf.algorithm.population.Individual;
 import es.udc.gii.common.eaf.algorithm.population.Population;
+import es.udc.gii.common.eaf.exception.OperatorException;
 import es.udc.gii.common.eaf.plugin.cma.RecombinationType;
 import es.udc.gii.common.eaf.plugin.cma.SuperlinearRecombinationType;
 import es.udc.gii.common.eaf.problem.Problem;
@@ -33,6 +34,8 @@ import es.udc.gii.common.eaf.util.ConfWarning;
 import es.udc.gii.common.eaf.util.EAFRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.math.stat.StatUtils;
 
@@ -121,6 +124,7 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
     private double[] initialX;
     private int diagonalCovarianceMatrix = 0;
     private RecombinationType recombinationType = new SuperlinearRecombinationType();
+    private int countCupdatesSinceEigenUpdate = 0;
 
     @Override
     public void configure(Configuration conf) {
@@ -145,7 +149,7 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
                 double x = conf.getDouble("TypicalX");
                 this.typicalX = new double[]{x};
             } else {
-                this.typicalX = new double[]{0.0};
+                this.typicalX = null;
                 ConfWarning w = new ConfWarning("EvolutionaryAlgorithm.TypicalX",
                         0.0);
                 w.warn();
@@ -349,7 +353,7 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
                         range = 0.2 * 2.0;
                     }
 
-                    xMean[i] = -1.0 + offset + EAFRandom.nextGaussian() * range;
+                    xMean[i] = -1.0 + offset + EAFRandom.nextDouble() * range;
 
                 }
 
@@ -409,6 +413,8 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
      */
     private void setDefaultParameters() {
 
+        this.setMaxEvaluations(Integer.MAX_VALUE);
+        this.setMaxGenerations(Integer.MAX_VALUE);
         this.chiN = Math.sqrt(N)
                 * (1.0 - 1.0 / (4.0 * N) + 1.0 / (21.0 * N * N));
 
@@ -633,5 +639,13 @@ public class CMAEvolutionaryAlgorithm extends EvolutionaryStrategy {
     public void setPopulationSize(int new_pop_size) {
         super.setPopulationSize(new_pop_size);
         this.setLambda(new_pop_size);
+    }
+
+    public int getCountCupdatesSinceEigenupdate() {
+        return this.countCupdatesSinceEigenUpdate;
+    }
+
+    public void setCountCupdatesSinceEigenupdate(int i) {
+        this.countCupdatesSinceEigenUpdate = i;
     }
 }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : real_parameters_function.xml
+    Created on : 29 de septiembre de 2008, 14:04
+    Author     : pilar
+    Description:
+        Purpose of the document follows.
+-->
+<Analysis>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.SphereModelObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.AckleysObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.GeneralizedGriewankObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.GeneralizedPenalizedObjectiveFunction_1</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.GeneralizedPenalizedObjectiveFunction_2</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.GeneralizedRastriginsObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.GeneralizedRosenbrocksObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.GeneralizedSchwefelObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.QuarticObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.SchwefelsProblem1_2ObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.SchwefelsProblem2_21ObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.SchwefelsProblem2_22ObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.StepObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.AxisParallelHyperEllipsoidObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.BealeObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.LevyObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.SumOfDifferentPowerObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.ZakharovObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.PermObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.CosineMixtureObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+			<Class>es.udc.gii.common.eaf.benchmark.real_param.BeckerAndLagoObjectiveFunction</Class>
+		</Objective>
+    </Problem>
+</Analysis>

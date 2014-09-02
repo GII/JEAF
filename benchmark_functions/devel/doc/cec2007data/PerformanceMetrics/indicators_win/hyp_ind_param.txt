@@ -1,0 +1,4 @@
+dim 2
+obj - -
+method 1
+nadir 2.1 2.1

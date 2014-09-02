@@ -1,0 +1,36 @@
+==========================
+Instructions for the CEC07.rar file 
+==========================
+
+I.    Data
+ The data files for all the test functions as listed in the CEC07 report.
+
+
+II.   ParetoOptimalfront
+ The Pareto Optimal fronts for all the test functions.
+
+
+III.  Testsuite
+The codes of MO Test suite in the CEC07 Special session 
+---Instructions_testsuite:      the detailed instructions for test suite codes.
+---Testsuite_c_source:         the c sourse code of the complete set of functions.
+---Testsuite_linux_c:            binary for c users in linux OS.
+---Testsuite_linux_matlab:    binary for matlab users in linux OS.
+---Testsuite_win_c:              binary for c users in windows OS.
+---Testsuite_win_matlab:      binary for matlab users in windows OS.
+
+
+IV.PerformanceMetrics
+The codes of performance metrics.
+---attainment_c_source:    the c sourse code of calculating attainment surface.(2 objs and 3objs).
+---attainment_linux:            binary for linux (eaf: 2 objs;  plot-att: 3 objs)
+---attainment_win:              binary for windows (eaf: 2 objs;  plot-att: 3 objs)
+
+---indicators_c_source:  the c sourse code of indicators
+---indicators_linux:          binaries for linux
+---indicators_win:            binaries for windows
+
+--- ReferenceSet: 	the reference sets of all test functions
+--- ReferenceSet_norm: the normalized reference sets of all test functions, for calculating the performance metrics.
+--- Boundfile:  	the bound files to normalize the objective values. If any objective values of your solutions exceed the upper bound,please ignore those solutions.
+--- Instructions_PM: Instructions how to use the codes to get the attainment surface and calculate the performance metrics. 

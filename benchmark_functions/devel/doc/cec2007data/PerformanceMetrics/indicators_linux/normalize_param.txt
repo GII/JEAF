@@ -1,0 +1,3 @@
+dim 2
+obj - -
+unify min

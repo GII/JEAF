@@ -1,0 +1,8 @@
+dim 2
+obj - -
+rho 0.01
+method 3
+R 2
+s 500
+nadir 2 2
+ideal 1 1

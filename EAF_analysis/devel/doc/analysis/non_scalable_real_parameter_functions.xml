@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : non_scalable_real_parameters_functions.xml
+    Created on : 2 de octubre de 2008, 23:11
+    Author     : pilar
+    Description:
+        Purpose of the document follows.
+-->
+<Analysis>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.GoldsteinPriceObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.HartmansFamily3ObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.HartmansFamily6ObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.KowaliksObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.ShekelFamilyObjectiveFunction</Class>
+            <M>5</M>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.ShekelsFoxholesObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.SixHumpCamelBackObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.AluffiPentinisObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.BealeObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.ColvilleFunctionObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.EasomObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.MatyasObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.BeckerAndLagoObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.BohachevskyObjectiveFunction_1</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.BohachevskyObjectiveFunction_2</Class>
+        </Objective>
+    </Problem>
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.real_param.DekersAndAartsObjectiveFunction</Class>
+        </Objective>
+    </Problem>
+</Analysis>
+

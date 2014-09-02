@@ -1,0 +1,103 @@
+<!--
+    Document   : escalable_multiobjective_functions.xml
+    Created on : 21 de octubre de 2008, 16:00               
+    Author     : rafa                                     
+    Description:                                           
+        Escalable multiobjective funtions test set.                   
+-->
+<Analysis>
+    
+    <!-- Sym_Part problem (CEC 2007) -->
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.sym_part.Sym_Part_Objective_1</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.sym_part.Sym_Part_Objective_2</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+    </Problem>
+    
+    <!-- Extended shifted ZDT1 (CEC 2007) -->
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt1.S_Zdt1_Objective_1</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt1.S_Zdt1_Objective_2</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+    </Problem>
+    
+    <!-- Extended shifted ZDT2 (CEC 2007) -->
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt2.S_Zdt2_Objective_1</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt2.S_Zdt2_Objective_2</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+    </Problem>
+    
+    <!-- Extended shifted ZDT4 (CEC 2007) -->
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt4.S_Zdt4_Objective_1</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt4.S_Zdt4_Objective_2</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+    </Problem>
+    
+    <!-- Extended rotated ZDT4 (CEC 2007) -->
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt4.R_Zdt4_Objective_1</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt4.R_Zdt4_Objective_2</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+    </Problem>
+    
+    <!-- Extended shifted ZDT6 (CEC 2007) -->
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt6.S_Zdt6_Objective_1</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.zdt6.S_Zdt6_Objective_2</Class>
+            <Dimension>10</Dimension>
+        </Objective>
+    </Problem>
+    
+    <!-- Extended shifted DTLZ2 (CEC 2007) -->
+    <Problem>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.dtlz2.S_Dtlz2_Objective</Class>
+            <Dimension>10</Dimension>
+            <ObjectiveNumber>0</ObjectiveNumber>
+            <NumberOfObjectives>3</NumberOfObjectives>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.dtlz2.S_Dtlz2_Objective</Class>
+            <Dimension>10</Dimension>
+            <ObjectiveNumber>1</ObjectiveNumber>
+            <NumberOfObjectives>3</NumberOfObjectives>
+        </Objective>
+        <Objective>
+            <Class>es.udc.gii.common.eaf.benchmark.multiobjective.dtlz2.S_Dtlz2_Objective</Class>
+            <Dimension>10</Dimension>
+            <ObjectiveNumber>2</ObjectiveNumber>
+            <NumberOfObjectives>3</NumberOfObjectives>
+        </Objective>
+    </Problem>
+</Analysis>

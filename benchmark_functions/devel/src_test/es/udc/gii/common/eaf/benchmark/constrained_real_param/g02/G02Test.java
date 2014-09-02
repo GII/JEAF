@@ -1,0 +1,22 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package es.udc.gii.common.eaf.benchmark.constrained_real_param.g02;
+
+/**
+ *
+ * @author pilar
+ */
+public class G02Test {
+
+    public static void normalize(double[] values) {
+
+        for (int i = 0; i<values.length; i++) {
+
+            values[i] = (values[i] - 5.0)/5.0;
+
+        }
+
+    }
+}

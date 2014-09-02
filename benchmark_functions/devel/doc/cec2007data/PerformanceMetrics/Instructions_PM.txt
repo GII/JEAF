@@ -1,0 +1,45 @@
+*********************************************************************************************************************
+Instructions how to use the codes to get the attainment surface and calculate the performance metrics. 
+
+*******************************************************************************************************************
+
+1)Plot the attainment surface:
+
+2 objectives:
+eaf -l <n> -o <output file> <data file>
+
+3 objectives:
+plot-att <data file> -k 3 -mm -1 -1 -1 -a 13 > output
+
+2)Calculate the performance metrics: 
+(The parameter files can be omitted, and the default parameters are taken.)
+
+Step 1:normalize the approximation set with objective bound file.
+normalize <bound_file> <data_file> <data_norm>  
+
+Step 2: calculate the hypervolume indicator
+hyp_ind	<data_norm> <reference_norm> <out_hyp>
+
+Step 3: calculate R indicator
+r_ind	<data_norm> <reference_norm> <out_r>
+
+Step 4: calculate covered sets (only for SYMPART problem)
+covered_sets <data_file> <output_file>
+
+Example:
+1) Plot the 0%, 50%,100% attainment surface of OKA2 problem.
+eaf -l 1 -o OKA2_att1 OKA2
+eaf -l 13 -o OKA2_att13 OKA2
+eaf -l 25 -o OKA2_att25 OKA2
+
+2) Plot the 50% attainment surface of S_DTLZ2(M=3) problem
+plot-att S_DTLZ2 -k 3 -mm -1 -1 -1 -a 13 > S_DTLZ2_att13
+
+3) Calculate the performance metrics (The parameter files can be omitted, and the default parameters are taken.)
+normalize bound_OKA2.txt OKA2 OKA2_norm
+normalize bound_OKA2.txt OKA2_ref OKA2_ref_norm
+hyp_ind OKA2_norm OKA2_ref_norm OKA2_hyp
+r_ind OKA2_norm OKA2_ref_norm OKA2_r
+
+
+More details of performance metrics are in the header of the corresponding c source files.

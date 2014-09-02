@@ -45,6 +45,7 @@ public class TolFunStopTest extends SimpleStopTest {
             best_fitness = algorithm.getBestIndividual().getFitness();
             worst_fitness = algorithm.getWorstIndividual().getFitness();
 
+
             if ((algorithm.getGenerations() > 1)
                     && (Math.abs(Math.max(worst_history, worst_fitness) 
                     - Math.min(best_history, best_fitness))) <= tol_fun) {

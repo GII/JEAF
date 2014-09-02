@@ -1,0 +1,8 @@
+* New Commons Math lib version
+
+--This line, and those below, will be ignored--
+
+D    lib/commons-math-1.1.jar
+D    lib/commons-math-2.0.jar
+D    lib/commons-math-1.2.jar
+AM   lib/commons-math-2.2.jar
