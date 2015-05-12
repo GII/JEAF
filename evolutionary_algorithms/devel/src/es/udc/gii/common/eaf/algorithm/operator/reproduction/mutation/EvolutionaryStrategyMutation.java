@@ -30,6 +30,7 @@ package es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation;
 import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.EvolutionaryStrategy;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
+import es.udc.gii.common.eaf.exception.ConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.configuration.Configuration;
@@ -74,9 +75,8 @@ public class EvolutionaryStrategyMutation extends MutationOperator {
             this.operator =
                     (MutationOperator) Class.forName(conf.getString("Operator")).newInstance();
             this.operator.configure(conf);
-            //this.lambda = conf.getInt("Lambda");
         } catch (Exception ex) {
-            ex.printStackTrace();
+             throw new ConfigurationException(this.getClass(), ex);
         }
         
     }
@@ -91,25 +91,10 @@ public class EvolutionaryStrategyMutation extends MutationOperator {
         
         //Genero tantos hijos como lambda:
         for (int i = 0; i<lambda; i++) {
-            
-//            newIndividual = this.operator.mutation(
-//                    algorithm,individual);
             mutated_individuals.addAll(
-                    this.operator.mutation(algorithm, individual));
-            
-//            algorithm.evaluate(newIndividual);
-//            mutatedIndividuals.add(newIndividual);
-            
+                    this.operator.mutation(algorithm, individual));           
         }
-        
-        /** 
-         * 06-06-08: No se añade el padre se devuelve el mejor de los hijos que se 
-         * añadira a la población intermedia para evaluar:
-         */
-        //Añado el padre a la lista de individuos para comparar con el:
-        //mutatedIndividuals.add(individual);
-        
-//        return bestSpecification.get(mutatedIndividuals,1,this.comparator).get(0);
+
         return mutated_individuals;
         
     }

@@ -47,7 +47,7 @@ import org.apache.commons.configuration.Configuration;
  * <pre>
  * {@code
  * <Operator>
- *      <Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.crossover.real_code.DoubleBLXCrossOver</Class>
+ *      <Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.crossover.real_code.BLXCrossOver</Class>
  *      <Alfa>value</Alfa>
  *      <Probability>value</Probability>
  * </Operator>
@@ -71,7 +71,7 @@ public class BLXCrossOver extends CrossOverOperator {
     
     private double alfa = 0.5;
     
-    /** Creates a new instance of FloatBLXCrossOver */
+    /** Creates a new instance of BLXCrossOver */
     public BLXCrossOver() {
     }
 

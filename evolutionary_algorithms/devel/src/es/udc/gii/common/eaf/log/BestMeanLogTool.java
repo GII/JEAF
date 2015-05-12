@@ -19,12 +19,8 @@ package es.udc.gii.common.eaf.log;
 import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.fitness.FitnessUtil;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import es.udc.gii.common.eaf.algorithm.productTrader.IndividualsProductTrader;
 import es.udc.gii.common.eaf.algorithm.productTrader.specification.BestIndividualSpecification;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
-import org.apache.commons.configuration.Configuration;
 
 /**
  * This log tool implements a log tool that record the number of generations performed, the

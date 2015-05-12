@@ -68,8 +68,8 @@ public class FEsBestMeanLogTool extends LogTool {
                     algorithm.getPopulation().getIndividuals(),1,algorithm.getComparator()).get(0);
             
             super.getLog().println(
-                    algorithm.getFEs() + " - " +
-                    best.getFitness() + " - " +
+                    algorithm.getFEs() + "\t" +
+                    best.getFitness() + "\t" +
                     FitnessUtil.meanFitnessValue(
                     algorithm.getPopulation().getIndividuals()));
         }

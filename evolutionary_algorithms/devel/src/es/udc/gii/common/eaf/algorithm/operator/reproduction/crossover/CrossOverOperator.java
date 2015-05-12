@@ -93,6 +93,9 @@ public abstract class CrossOverOperator extends ReproductionOperator {
      * individuals, which are copies of the parents, can be overriden with the
      * generated children.
      * 
+     * @param ea
+     * @param individuals
+     * @return 
      */
     protected abstract List<Individual> crossOver(EvolutionaryAlgorithm ea,
             List<Individual> individuals);
