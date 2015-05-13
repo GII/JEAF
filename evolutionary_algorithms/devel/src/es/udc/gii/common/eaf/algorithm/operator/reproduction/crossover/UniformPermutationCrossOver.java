@@ -142,8 +142,8 @@ public class UniformPermutationCrossOver extends CrossOverOperator {
         EAFRandom.init();
 
         UniformPermutationCrossOver upo = new UniformPermutationCrossOver();
-        double[] p1 = {4, 1, 5, 3, 2};
-        double[] p2 = {2, 1, 5, 3, 4};
+        double[] p1 = {4.0, 1.0, 5.0, 3.0, 2.0};
+        double[] p2 = {2.0, 1.0, 5.0, 3.0, 4.0};
         double[] c1 = new double[5];
         double[] c2 = new double[5];
 

@@ -18,7 +18,7 @@
 package es.udc.gii.common.eaf.algorithm.population.jade;
 
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import org.apache.commons.math.util.DoubleArray;
+import java.util.Map;
 
 /**
  * JADE is a differential evolution version which updates control parameters in an adaptive maner.
@@ -50,7 +50,7 @@ public class JADEIndividual extends Individual {
      */
     private double F = 0.5;
 
-    public JADEIndividual(DoubleArray[] chromosomes, double CR, double F) {
+    public JADEIndividual(Map<Integer, double[]> chromosomes, double CR, double F) {
         super(chromosomes);
         this.CR = CR;
         this.F = F;

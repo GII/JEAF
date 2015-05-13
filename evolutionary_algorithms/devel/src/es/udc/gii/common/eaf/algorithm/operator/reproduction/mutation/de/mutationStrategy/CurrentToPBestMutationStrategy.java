@@ -14,7 +14,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.mutationStrategy;
 
 import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
@@ -28,16 +27,20 @@ import java.util.List;
 import org.apache.commons.configuration.Configuration;
 
 /**
- * The mutation operator of the Differential Evolution Algorithm use different mutation strategies to
- * create the individuals of the population. This class implements the Current-to-<i>p</i>best strategy.
- * Following this strategy a new mutation vector is generated as follows: <p>
+ * The mutation operator of the Differential Evolution Algorithm use different
+ * mutation strategies to create the individuals of the population. This class
+ * implements the Current-to-<i>p</i>best strategy. Following this strategy a
+ * new mutation vector is generated as follows:
+ * <p>
  *
- * v<sub>i,g</sub> = x<sub>i,g</sub> + F&sdot;(x<sup>p</sup><sub>best,g</sub> - x<sub>i,g</sub>) +
- * F&sdot;(x<sub>r1,g</sub> - x<sub>r2,g</sub>) <p>
+ * v<sub>i,g</sub> = x<sub>i,g</sub> + F&sdot;(x<sup>p</sup><sub>best,g</sub> -
+ * x<sub>i,g</sub>) + F&sdot;(x<sub>r1,g</sub> - x<sub>r2,g</sub>)
+ * <p>
  *
- * where x<sup>p</sup><sub>best,g</sub> is randomly chosen as one of the 100<i>p</i>% individuals in
- * the current population with p &isin;(0, 1]. This strategy is a generalization of current-to-best
- * strategy. Any of the top 100<i>p</i>% solution can be randomly chosen to play the role of tje single
+ * where x<sup>p</sup><sub>best,g</sub> is randomly chosen as one of the
+ * 100<i>p</i>% individuals in the current population with p &isin;(0, 1]. This
+ * strategy is a generalization of current-to-best strategy. Any of the top
+ * 100<i>p</i>% solution can be randomly chosen to play the role of tje single
  * best solution in current-to-best.<p>
  *
  * To configure this mutation strategy the xml code should be:
@@ -53,9 +56,11 @@ import org.apache.commons.configuration.Configuration;
  * }
  * </pre>
  *
- * where <i>p</i> is the value of the parameter that control the greediness of the mutation strategy given
- * as a fraction of unity. <i>F</i> and <i>diffVector</i> are parameters inherit from the DEMutationStrategy class. If
- * some of the parameters do not appear in the configuration, they are set to their default values.<p>
+ * where <i>p</i> is the value of the parameter that control the greediness of
+ * the mutation strategy given as a fraction of unity. <i>F</i> and
+ * <i>diffVector</i> are parameters inherit from the DEMutationStrategy class.
+ * If some of the parameters do not appear in the configuration, they are set to
+ * their default values.<p>
  *
  * Default values:
  * <ul>
@@ -64,18 +69,21 @@ import org.apache.commons.configuration.Configuration;
  * <li>diffVector = 1 </li>
  * </ul>
  *
- * This mutation strategy was first presented in "JADE: Adaptive Differential Evolution with Optional External Archive",
- * Jinqiao Zhang amd Arthur C. Sanderson, IEEE Transacions on Evolutionary Computation, Vol. 13,
- * No. 5, October 2009. <p>
+ * This mutation strategy was first presented in "JADE: Adaptive Differential
+ * Evolution with Optional External Archive", Jinqiao Zhang amd Arthur C.
+ * Sanderson, IEEE Transacions on Evolutionary Computation, Vol. 13, No. 5,
+ * October 2009.
+ * <p>
  *
- * @author Grupo Integrado de Ingeniería (<a href="http://www.gii.udc.es">www.gii.udc.es</a>)
+ * @author Grupo Integrado de Ingeniería
+ * (<a href="http://www.gii.udc.es">www.gii.udc.es</a>)
  * @since 1.0.
  */
 public class CurrentToPBestMutationStrategy extends DEMutationStrategy {
 
     /**
-     * Parameter which controls the greediness of the mutation strategy. The authors recommend
-     * p &isin; [5%, 20%].
+     * Parameter which controls the greediness of the mutation strategy. The
+     * authors recommend p &isin; [5%, 20%].
      */
     private double p = 0.05;
 
@@ -87,17 +95,17 @@ public class CurrentToPBestMutationStrategy extends DEMutationStrategy {
     @Override
     public Individual getMutatedIndividual(EvolutionaryAlgorithm algorithm, Individual target) {
 
-        BestIndividualSpecification bestSpec =
-                new BestIndividualSpecification();
+        BestIndividualSpecification bestSpec
+                = new BestIndividualSpecification();
         List<Individual> individuals, best_p_individuals, listInd;
         List<Integer> index_list;
-        Individual best_p, base;
-        double[] chromosome;
+        Individual best_p;
+        double[] base;
         int n, random_p_pos, randomPos;
         double auxGeneValue, x1, x2, x3, x4;
         double F;
 
-        individuals = new ArrayList<Individual>();
+        individuals = new ArrayList<>();
         individuals.addAll(algorithm.getPopulation().getIndividuals());
 
         //Si hay archivo y no está creado se crea:
@@ -110,7 +118,7 @@ public class CurrentToPBestMutationStrategy extends DEMutationStrategy {
             individuals.addAll(algorithm.getPopulation().getArchive());
         }
 
-        base = (Individual) target.clone();
+        base = ((Individual) target).getChromosomeAt(0);
 
         //Se escoge x_p_best = un aleatorio de los 100*p% individuos de la poblacion:
         n = (int) (this.p * individuals.size());
@@ -121,9 +129,9 @@ public class CurrentToPBestMutationStrategy extends DEMutationStrategy {
         F = this.getFPlugin().get(algorithm);
 
         //se eligen los vectores diferenciales:
-        listInd = new ArrayList<Individual>();
+        listInd = new ArrayList<>();
 
-        index_list = new ArrayList<Integer>();
+        index_list = new ArrayList<>();
         index_list.add(individuals.indexOf(target));
 
         for (int i = 0; i < this.getDiffVector() * 2; i++) {
@@ -147,10 +155,10 @@ public class CurrentToPBestMutationStrategy extends DEMutationStrategy {
 
         if (base != null) {
             //Recorremos el numero de genes:
-            chromosome = target.getChromosomeAt(0);
-            for (int i = 0; i < target.getChromosomeAt(0).length; i++) {
 
-                auxGeneValue = chromosome[i];
+            for (int i = 0; i < base.length; i++) {
+
+                auxGeneValue = base[i];
 
                 for (int j = 0; j < this.getDiffVector(); j += 2) {
 
@@ -162,19 +170,20 @@ public class CurrentToPBestMutationStrategy extends DEMutationStrategy {
                 }
 
                 x3 = best_p.getChromosomeAt(0)[i];
-                x4 = base.getChromosomeAt(0)[i];
+                x4 = base[i];
 
                 auxGeneValue += F * (x3 - x4);
 
-                chromosome[i] = auxGeneValue;
+                base[i] = auxGeneValue;
 
             }
-            base.setChromosomeAt(0, chromosome);
+
         }
 
-        if (base instanceof JADEIndividual)
-            ((JADEIndividual)base).setF(F);
-        return base;
+        Individual mutatedIndividual = new Individual();
+        mutatedIndividual.setChromosomeAt(0, base);
+
+        return mutatedIndividual;
 
     }
 
@@ -187,16 +196,16 @@ public class CurrentToPBestMutationStrategy extends DEMutationStrategy {
         if (conf.containsKey("p")) {
             this.p = conf.getDouble("p");
         } else {
-            w = new ConfWarning(this.getClass().getSimpleName() +
-                    ".p", this.p);
+            w = new ConfWarning(this.getClass().getSimpleName()
+                    + ".p", this.p);
 
         }
 
         if (conf.containsKey("archive")) {
             this.archive = conf.getBoolean("archive");
         } else {
-            w = new ConfWarning(this.getClass().getSimpleName() +
-                    ".archive", Boolean.toString(this.archive));
+            w = new ConfWarning(this.getClass().getSimpleName()
+                    + ".archive", Boolean.toString(this.archive));
 
         }
 

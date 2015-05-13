@@ -150,10 +150,10 @@ public class CXCrossOver extends CrossOverOperator {
 
     // testing
     public static void main(String[] args) {
-        double[] p1 = {1, 3, 5, 2};
-        double[] p2 = {2, 5, 3, 1};
-        double[] c1 = {1, 3, 5, 2};
-        double[] c2 = {2, 5, 3, 1};
+        double[] p1 = {1.0, 3.0, 5.0, 2.0};
+        double[] p2 = {2.0, 5.0, 3.0, 1.0};
+        double[] c1 = {1.0, 3.0, 5.0, 2.0};
+        double[] c2 = {2.0, 5.0, 3.0, 1.0};
 
         EAFRandom.init();
         CXCrossOver cx = new CXCrossOver();

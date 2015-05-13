@@ -20,8 +20,8 @@ import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
 import es.udc.gii.common.eaf.util.ConfWarning;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.math.util.DoubleArray;
 
 /**
  * This class implements a simple stop test. The stop condition is met if the
@@ -57,12 +57,12 @@ public class GeneDifferenceConvergence extends SimpleStopTest {
     private double maxDifference = 10e-6;
 
     private boolean exceedsDifference(Individual i1, Individual i2) {
-        DoubleArray[] ci1 = i1.getChromosomes();
-        DoubleArray[] ci2 = i2.getChromosomes();
+        Map<Integer, double[]> ci1 = i1.getChromosomes();
+        Map<Integer, double[]> ci2 = i2.getChromosomes();
 
-        for (int i = 0; i < ci1.length; i++) {
-            for (int j = 0; j < ci1[i].getNumElements(); j++) {
-                if (Math.abs(ci1[i].getElement(j) - ci2[i].getElement(j))
+        for (int i = 0; i < ci1.size(); i++) {
+            for (int j = 0; j < ci1.get(i).length; j++) {
+                if (Math.abs(ci1.get(i)[j] - ci2.get(i)[j])
                         > this.maxDifference) {
                     return true;
                 }

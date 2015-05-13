@@ -75,31 +75,30 @@ public class ExpCrossOverScheme extends CrossOverScheme {
     @Override
     public Individual crossOver(EvolutionaryAlgorithm ea, Individual target, Individual v) {
 
-        Individual trial;
-        int i = 0, k, L;
+        double[] trial;
+        int k, L;
         int size;
-        double[] trial_chromosome;
         double CR = this.getCRPlugin().get(ea);
 
-        trial = (Individual) target.clone();
-        size = target.getChromosomeAt(0).length;
+        trial = target.getChromosomeAt(0);
+        size = trial.length;
 
         //Punto de partida:
         k = EAFRandom.nextInt(size);
         L = 0;
 
-        trial_chromosome = trial.getChromosomeAt(0);
+        double[] vArray = v.getChromosomeAt(0);
         do {
-
-            trial_chromosome[k] =
-                    v.getChromosomeAt(0)[k];
+            trial[k] = vArray[k];
             k = (k+1) % size;
             L++;
 
         } while (EAFRandom.nextDouble() < CR && L < size);
 
-        trial.setChromosomeAt(0, trial_chromosome);
-        return trial;
+                Individual crossoverIndividual = new Individual();
+        crossoverIndividual.setChromosomeAt(0, trial);
+        
+        return crossoverIndividual;
 
     }
 }

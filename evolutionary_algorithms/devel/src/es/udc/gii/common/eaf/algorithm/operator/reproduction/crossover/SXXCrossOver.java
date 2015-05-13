@@ -230,10 +230,10 @@ public class SXXCrossOver extends CrossOverOperator {
 //        double[] p2 = {2, 5, 3, 1};
 //        double[] c1 = {1, 3, 5, 2};
 //        double[] c2 = {2, 5, 3, 1};
-        double[] p1 = {1};
-        double[] p2 = {3};
-        double[] c1 = {1};
-        double[] c2 = {3};
+        double[] p1 = {1.0};
+        double[] p2 = {3.0};
+        double[] c1 = {1.0};
+        double[] c2 = {3.0};
 
         EAFRandom.init();
         SXXCrossOver sxx = new SXXCrossOver();

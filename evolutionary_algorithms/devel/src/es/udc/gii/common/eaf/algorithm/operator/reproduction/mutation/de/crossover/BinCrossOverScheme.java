@@ -70,33 +70,36 @@ public class BinCrossOverScheme extends CrossOverScheme {
     @Override
     public Individual crossOver(EvolutionaryAlgorithm ea, Individual target, Individual v) {
         
-        Individual trial;
+        double[] trial;
         int size, randomI;
-        double[] trial_chromosome;
         double CR;
         
-        trial = (Individual)target.clone();
-        size = target.getChromosomeAt(0).length;
+        trial = target.getChromosomeAt(0);
+        size = trial.length;
         randomI = (int)Math.floor(EAFRandom.nextDouble()*size);
         CR = this.getCRPlugin().get(ea);
         
-        trial_chromosome = trial.getChromosomeAt(0);
+        double[] vArray = v.getChromosomeAt(0);
+        double[] targetArray = target.getChromosomeAt(0);
+        
         for (int j = 0; j<size; j++) {
             
             if (EAFRandom.nextDouble() <= CR || randomI == j) {
                 
-                trial_chromosome[j] = v.getChromosomeAt(0)[j];
+                trial[j] = vArray[j];
                                 
             } else {
                 
-                trial_chromosome[j] = target.getChromosomeAt(0)[j];
+                trial[j] = targetArray[j];
                 
             }
             
         }
         
-        trial.setChromosomeAt(0, trial_chromosome);
-        return trial;
+        Individual crossoverIndividual = new Individual();
+        crossoverIndividual.setChromosomeAt(0, trial);
+        
+        return crossoverIndividual;
         
     }
     

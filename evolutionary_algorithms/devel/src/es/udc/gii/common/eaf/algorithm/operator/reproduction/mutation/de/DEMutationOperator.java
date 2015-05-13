@@ -129,7 +129,7 @@ public class DEMutationOperator extends MutationOperator {
             }
             
             
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             throw new ConfigurationException(this.getClass(), ex);
         }
 
@@ -139,29 +139,24 @@ public class DEMutationOperator extends MutationOperator {
     @Override
     protected List<Individual> mutation(EvolutionaryAlgorithm algorithm, Individual target) {
 
-        Individual base,trial ;
-        List<Individual> mutated_individual = new ArrayList<Individual>();
-        double[] chromosome;
-
-        base = this.mutationStrategy.getMutatedIndividual(algorithm, target);
-
-        //Se comprueban los límites de los genes:
-        chromosome = base.getChromosomeAt(0);
-        for (int i = 0; i < chromosome.length; i++) {
-            chromosome[i] = checkBounds(algorithm, chromosome[i]);
-        }
-        base.setChromosomeAt(0, chromosome);
+        List<Individual> individuals = new ArrayList<>();
         
-
+        Individual base = (this.mutationStrategy.getMutatedIndividual(algorithm, target));
+        //Se comprueban los límites de los genes:
+        for (int i = 0; i < base.getChromosomeAt(0).length; i++) {
+            base.getChromosomeAt(0)[i] = checkBounds(algorithm, base.getChromosomeAt(0)[i]);
+        }
+        
         //El individuo "base" es el nuevo individuo mutado, hay que cruzarlo para
         //crear el individuo "trial" que se comparará con el "target" para decidir
         //quien pasa a la siguiente generación:
 
-        trial = this.crossOverScheme.crossOver(algorithm, target, base);
-        trial.setFitness(-Double.MAX_VALUE);
+        Individual mutatedIndividual = 
+                this.crossOverScheme.crossOver(algorithm, target, base);
         
-        mutated_individual.add(trial);
-        return mutated_individual;
+        
+        individuals.add(mutatedIndividual);
+        return individuals;
         
     }
 

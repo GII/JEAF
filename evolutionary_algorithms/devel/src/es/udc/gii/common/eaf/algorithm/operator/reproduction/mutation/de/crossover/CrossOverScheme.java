@@ -97,7 +97,7 @@ public abstract class CrossOverScheme implements Configurable {
                 this.CR_plugin.configure(conf.subset("CR"));
             }
 
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
             throw new ConfigurationException(this.getClass(), ex);
         }
     }

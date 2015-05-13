@@ -18,8 +18,6 @@ package es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.mutati
 
 import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import es.udc.gii.common.eaf.algorithm.population.jade.JADEIndividual;
-import es.udc.gii.common.eaf.algorithm.productTrader.specification.BestIndividualSpecification;
 import es.udc.gii.common.eaf.exception.ConfigurationException;
 import es.udc.gii.common.eaf.plugin.parameter.Parameter;
 import es.udc.gii.common.eaf.util.ConfWarning;
@@ -84,28 +82,25 @@ public class CurrentToRandomMutationStrategy extends DEMutationStrategy {
     @Override
     public Individual getMutatedIndividual(EvolutionaryAlgorithm algorithm, Individual target) {
 
-        BestIndividualSpecification bestSpec =
-                new BestIndividualSpecification();
         List<Individual> individuals, listInd;
         List<Integer> index_list;
-        Individual base;
-        double[] chromosome;
+        double[] base;
         int n, randomPos;
         double auxGeneValue, x1, x2, x3, x4;
         double F, K;
 
-        individuals = new ArrayList<Individual>();
+        individuals = new ArrayList<>();
         individuals.addAll(algorithm.getPopulation().getIndividuals());
 
-        base = (Individual) target.clone();
+        base = ((Individual) target).getChromosomeAt(0);
 
         F = this.getFPlugin().get(algorithm);
         K = this.K_plugin.get(algorithm);
 
         //se eligen los vectores diferenciales:
-        listInd = new ArrayList<Individual>();
+        listInd = new ArrayList<>();
 
-        index_list = new ArrayList<Integer>();
+        index_list = new ArrayList<>();
         index_list.add(individuals.indexOf(target));
 
         //Se elige el xr3, tiene que ser diferente al target, por eso se hace el do-while:
@@ -135,10 +130,9 @@ public class CurrentToRandomMutationStrategy extends DEMutationStrategy {
 
         if (base != null) {
             //Recorremos el numero de genes:
-            chromosome = target.getChromosomeAt(0);
-            for (int i = 0; i < target.getChromosomeAt(0).length; i++) {
+            for (int i = 0; i < base.length; i++) {
 
-                auxGeneValue = chromosome[i];
+                auxGeneValue = base[i];
 
                 for (int j = 0; j < this.getDiffVector(); j += 2) {
 
@@ -150,17 +144,19 @@ public class CurrentToRandomMutationStrategy extends DEMutationStrategy {
                 }
 
                 x3 = listInd.get(0).getChromosomeAt(0)[i];
-                x4 = base.getChromosomeAt(0)[i];
+                x4 = base[i];
 
                 auxGeneValue += K * (x3 - x4);
 
-                chromosome[i] = auxGeneValue;
+                base[i] = auxGeneValue;
 
             }
-            base.setChromosomeAt(0, chromosome);
         }
 
-        return base;
+        Individual mutatedIndividual = new Individual();
+        mutatedIndividual.setChromosomeAt(0, base);
+        
+        return mutatedIndividual;
 
     }
 

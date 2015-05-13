@@ -14,12 +14,10 @@ package es.udc.gii.rosamituscma;
  * You should have received a copy of the GNU General Public License along with this program. If
  * not, see <http://www.gnu.org/licenses/>.
  */
-import es.udc.gii.common.eaf.algorithm.CMAEvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.EvolutionaryStrategy;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
 import es.udc.gii.common.eaf.algorithm.population.Population;
-import es.udc.gii.common.eaf.exception.OperatorException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
