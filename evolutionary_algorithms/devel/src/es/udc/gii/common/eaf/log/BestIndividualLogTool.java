@@ -91,7 +91,7 @@ public class BestIndividualLogTool extends LogTool {
 
                 s += algorithm.getGenerations() + " - ";
 
-                for (int i = 0; i < best.getChromosomes().size(); i++) {
+                for (int i = 0; i < best.getChromosomes().length; i++) {
 
                     for (int j = 0; j < best.getChromosomeAt(i).length; j++) {
 

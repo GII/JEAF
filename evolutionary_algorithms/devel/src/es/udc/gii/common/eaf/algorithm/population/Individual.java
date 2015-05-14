@@ -1,19 +1,21 @@
 /*
- * Copyright (C) 2010 Grupo Integrado de Ingeniería
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2010 Grupo Integrado de Ingeniería
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/ 
+
+
 /*
  * Individual.java
  *
@@ -33,16 +35,15 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.math.util.DoubleArray;
+import org.apache.commons.math.util.ResizableDoubleArray;
 
 /**
  * This class represents a basic individual of the population.
- *
- * @author Grupo Integrado de Ingeniería
- * (<a href="http://www.gii.udc.es">www.gii.udc.es</a>)
+ * 
+ * @author Grupo Integrado de Ingeniería (<a href="http://www.gii.udc.es">www.gii.udc.es</a>)
  * @since 1.0
  */
 public class Individual implements Cloneable, Configurable, Externalizable {
@@ -56,7 +57,7 @@ public class Individual implements Cloneable, Configurable, Externalizable {
      * List of the objective values.
      */
     private List<Double> objectives = null;
-
+    
     //13-12-2007: añadido un vector de valores de restricciones:
     /**
      * List of the constraint values.
@@ -71,9 +72,9 @@ public class Individual implements Cloneable, Configurable, Externalizable {
     /**
      * Array of chromosomes of the individual.
      */
-    //private DoubleArray[] chromosomes = null;
-    private Map<Integer, double[]> chromosomes;
+    private DoubleArray[] chromosomes = null;
 
+    
     private boolean serializeEvalResults = true;
     private boolean serializeGenotype = true;
 
@@ -82,27 +83,22 @@ public class Individual implements Cloneable, Configurable, Externalizable {
      */
     private FitnessComparator<Individual> comparator = null;
 
-    /**
-     * Creates a new instance of Individual
-     */
+    /** Creates a new instance of Individual */
     public Individual() {
     }
 
     /**
      * Creates a new instance of Individual with a DoubleArray of chromosomes.
-     *
      * @param chromosomes DoubleArray of the individual's chromosomes.
      */
-    public Individual(Map<Integer, double[]> chromosomes) {
+    public Individual(DoubleArray[] chromosomes) {
 
         this.chromosomes = chromosomes;
     }
 
     /**
      * Configures the current individual.
-     *
-     * @param conf configuration's parameters to configure the current
-     * individual.
+     * @param conf configuration's parameters to configure the current individual.
      */
     @Override
     public void configure(Configuration conf) {
@@ -110,7 +106,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Returns the fitness comparator of this individual.
-     *
      * @return the fitness comparator of this individual.
      */
     public FitnessComparator<Individual> getComparator() {
@@ -119,7 +114,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Sets the fitness comparator of this individual.
-     *
      * @param comparator the fitness comparator of this individual.
      */
     public void setComparator(FitnessComparator<Individual> comparator) {
@@ -128,7 +122,7 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Returns the fitness value of the Individual.
-     *
+     * 
      * @return fitness the fitness value of the Individual.
      */
     public double getFitness() {
@@ -139,7 +133,7 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Sets the fitness value of the Individual.
-     *
+     * 
      * @param fitness the new fitness value of the Individual.
      */
     public void setFitness(double fitness) {
@@ -150,10 +144,9 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Returns the chromosomes of the individual.
-     *
      * @return chromosomes an array of chromososmes of the individual.
      */
-    public Map<Integer, double[]> getChromosomes() {
+    public DoubleArray[] getChromosomes() {
 
         return this.chromosomes;
 
@@ -161,47 +154,47 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Returns the chromosome at <i>index</i> of the individual.
-     *
+     * 
      * @param index index of the chromosome to return.
      * @return the double array of the chromosome at index.
      */
     public double[] getChromosomeAt(int index) {
 
-        return this.chromosomes.get(index);
+        return ((ResizableDoubleArray) this.chromosomes[index]).getElements();
 
     }
 
     /**
      * Sets an array of chromosomes to the current Individual.
-     *
      * @param chromosomes a new array of chromosomes.
      */
-    public void setChromosomes(Map<Integer, double[]> chromosomes) {
+    public void setChromosomes(DoubleArray[] chromosomes) {
 
         this.chromosomes = chromosomes;
 
     }
 
     /**
-     * Sets a double array chromosome to the current individual at position
-     * <i>index</i>.
-     *
+     * Sets a double array chromosome to the current individual at position <i>index</i>.
      * @param index position to set the new chromosome.
      * @param chromosome a chromosme to be set at position <i>index</i>.
      */
     public void setChromosomeAt(int index, double[] chromosome) {
 
         if (this.chromosomes == null) {
-            this.chromosomes = new HashMap<>();
+            this.chromosomes = new DoubleArray[1];
+        }
+        
+        this.chromosomes[index] = new ResizableDoubleArray(chromosome.length);
+        for (int i = 0; i < chromosome.length; i++) {
+            this.chromosomes[index].setElement(i, chromosome[i]);
         }
 
-        this.chromosomes.put(index, chromosome);
 
     }
 
     /**
      * Returns the number of violated constraints.
-     *
      * @return violated_contraint the number of violated constraints.
      */
     public int getViolatedConstraints() {
@@ -210,7 +203,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Sets the number of violated constraints of the Individual.
-     *
      * @param violatedConstraints number of violated constraints.
      */
     public void setViolatedConstraints(int violatedConstraints) {
@@ -218,10 +210,9 @@ public class Individual implements Cloneable, Configurable, Externalizable {
     }
 
     /**
-     * Restuns the value of the objective functions evaluate with the
-     * chromosomes of this Individual.
-     *
-     * @return objectives a list with the values of the objective functions
+     * Restuns the value of the objective functions evaluate with the chromosomes 
+     * of this Individual.
+     * @return objectives a list with the values of the objective functions 
      * evaluate with this Individual.
      */
     public List<Double> getObjectives() {
@@ -230,7 +221,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Sets the values of the objectives functions evaluate by this individual.
-     *
      * @param objectives list of values of the objective functions.
      */
     public void setObjectives(List<Double> objectives) {
@@ -238,9 +228,8 @@ public class Individual implements Cloneable, Configurable, Externalizable {
     }
 
     /**
-     * Returns the values of the contraint functions evaluate with the
-     * chromosomes of this Individual.
-     *
+     * Returns the values of the contraint functions evaluate with the chromosomes of
+     * this Individual.
      * @return contraints list of values of the contraint functions.
      */
     public List<Double> getConstraints() {
@@ -249,7 +238,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Sets the values of the constraint functions evaluate by this individual.
-     *
      * @param constraints list of values of the objective functions.
      */
     public void setConstraints(List<Double> constraints) {
@@ -259,10 +247,10 @@ public class Individual implements Cloneable, Configurable, Externalizable {
     /**
      * This method controls the behaviour of the serialization of an instance of
      * this class. Setting <code>true</code> means that the genotype information
-     * will be serialized (and hence will be transmitted, for example, via
-     * sockets). Setting <code>false</code> means that the genotype information
-     * won't be serialized.
-     *
+     * will be serialized (and hence will be transmitted, for example, via sockets).
+     * Setting <code>false</code> means that the genotype information won't be
+     * serialized.
+     * 
      * @param serializeGenotype
      */
     public void setSerializeGenotype(boolean serializeGenotype) {
@@ -272,10 +260,11 @@ public class Individual implements Cloneable, Configurable, Externalizable {
     /**
      * This method controls the behaviour of the serialization of an instance of
      * this class. Setting <code>true</code> means that the evaluation results
-     * (objectives, contraint values, ...) will be serialized (and hence will be
-     * transmitted, for example, via sockets). Setting <code>false</code> means
-     * that this information won't be serialized.
-     *
+     * (objectives, contraint values, ...)
+     * will be serialized (and hence will be transmitted, for example, via sockets).
+     * Setting <code>false</code> means that this information won't be
+     * serialized.
+     * 
      * @param serializePhenotype {@code true} or {@code false}.
      */
     public void setSerializeEvalResults(boolean serializePhenotype) {
@@ -286,11 +275,11 @@ public class Individual implements Cloneable, Configurable, Externalizable {
      * Before and while serialization this method returns <code>true</code> if
      * the genotype information should be serialized and <code>false</code>
      * otherwise.<p>
-     *
-     * While de-serialization this method returns <code>true</code> if the
-     * genotype information should be de-serialized. After de-serialization it
-     * returns <code>true</code> if genotype information has been de-serialized.
-     * It returns <code>false</code> otherwise.
+     * 
+     * While de-serialization this method returns <code>true</code> if
+     * the genotype information should be de-serialized. After de-serialization
+     * it returns <code>true</code> if genotype information has been
+     * de-serialized. It returns <code>false</code> otherwise.   
      */
     public boolean isSerializeGenotype() {
         return serializeGenotype;
@@ -300,11 +289,11 @@ public class Individual implements Cloneable, Configurable, Externalizable {
      * Before and while serialization this method returns <code>true</code> if
      * the evaluation results should be serialized and <code>false</code>
      * otherwise.<p>
-     *
-     * While de-serialization this method returns <code>true</code> if the
-     * evaluation results should be de-serialized. After de-serialization it
-     * returns <code>true</code> if the evaluation results heve been
-     * de-serialized. It returns <code>false</code> otherwise.
+     * 
+     * While de-serialization this method returns <code>true</code> if
+     * the evaluation results should be de-serialized. After de-serialization
+     * it returns <code>true</code> if the evaluation results heve been
+     * de-serialized. It returns <code>false</code> otherwise.   
      */
     public boolean isSerializeEvalResults() {
         return serializeEvalResults;
@@ -314,38 +303,35 @@ public class Individual implements Cloneable, Configurable, Externalizable {
      * Generates the chromosomes of the Individual with values in [-1.0,1.0]
      */
     public void generate() {
-
-        double[] chromosome;
+        
         if (this.chromosomes == null) {
-            this.chromosomes = new HashMap<>();
-            this.chromosomes.put(0, new double[this.getDimension()]);
+            this.chromosomes = new DoubleArray[1];
+            this.chromosomes[0] = new ResizableDoubleArray(this.getDimension());
         }
+        
+        for (int i = 0; i < this.chromosomes.length; i++) {
 
-        for (int i = 0; i < this.chromosomes.size(); i++) {
+            for (int j = 0; j < this.chromosomes[i].getNumElements(); j++) {
 
-            chromosome = new double[this.getDimension()];
 
-            for (int j = 0; j < this.getDimension(); j++) {
-                chromosome[j] = EAFRandom.nextDouble() * 2.0 - 1.0;
+                this.chromosomes[i].setElement(j, EAFRandom.nextDouble() * 2.0 - 1.0);
+
             }
 
-            this.chromosomes.put(i, chromosome);
         }
 
     }
 
     /**
-     * Returns the dimension of this individual as the sum of the dimensions of
-     * all its chromosomes.
-     *
+     * Returns the dimension of this individual as the sum of the dimensions of all its chromosomes.
      * @return the dimension of this individual.
      */
     public int getDimension() {
 
         int dimension = 0;
 
-        for (double[] d : this.chromosomes.values()) {
-            dimension += d.length;
+        for (DoubleArray d : this.chromosomes) {
+            dimension += d.getNumElements();
         }
 
         return dimension;
@@ -354,14 +340,13 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Sets the dimension of each chromosome of the individual.
-     *
      * @param dimensions array of dimensions.
      */
     public void setDimension(int[] dimensions) {
 
-        for (int i = 0; i < this.chromosomes.size(); i++) {
+        for (int i = 0; i < this.chromosomes.length; i++) {
 
-            this.chromosomes.put(i, new double[dimensions[i]]);
+            this.setChromosomeAt(i, new double[dimensions[i]]);
 
         }
 
@@ -370,7 +355,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Resturns a String representation of the Individual.
-     *
      * @return a string representation of the Individual.
      */
     @Override
@@ -378,19 +362,20 @@ public class Individual implements Cloneable, Configurable, Externalizable {
         if (this.chromosomes != null) {
             String s = "[";
 
-            for (int i = 0; i < this.chromosomes.size(); i++) {
+            for (int i = 0; i < this.chromosomes.length; i++) {
 
                 s += "(";
 
-                for (int j = 0; j < this.chromosomes.get(i).length - 1; j++) {
+                for (int j = 0; j < this.chromosomes[i].getNumElements() - 1; j++) {
 
-                    s += this.chromosomes.get(i)[j] + ", ";
+                    s += this.chromosomes[i].getElement(j) + ", ";
 
                 }
 
-                s += this.chromosomes.get(i)[this.chromosomes.get(i).length - 1];
+                s += this.chromosomes[i].getElement(this.chromosomes[i].getNumElements() - 1);
 
             }
+
 
             s += "] - " + this.fitness;
 
@@ -402,14 +387,13 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Clones the current individual.
-     *
      * @return a new individual which is a copy of the current one.
      */
     @Override
     public Object clone() {
 
         Individual clone = null;
-        HashMap<Integer, double[]> clone_chromosomes = null;
+        DoubleArray[] clone_chromosomes = null;
 
         try {
             clone = (Individual) super.clone();
@@ -417,25 +401,23 @@ public class Individual implements Cloneable, Configurable, Externalizable {
             assert false;
         }
 
-        double[] cc;
         //Clono los cromosomas:
         if (this.chromosomes != null) {
-            clone_chromosomes = new HashMap<>();
+            clone_chromosomes = new DoubleArray[this.chromosomes.length];
 
-            for (int i = 0; i < this.chromosomes.size(); i++) {
+            for (int i = 0; i < this.chromosomes.length; i++) {
 
-                cc = new double[this.chromosomes.get(i).length];
+                clone_chromosomes[i] = new ResizableDoubleArray(this.chromosomes[i].getNumElements());
+                for (int j = 0; j < this.chromosomes[i].getNumElements(); j++) {
 
-                for (int j = 0; j < cc.length; j++) {
+                    clone_chromosomes[i].setElement(j, this.chromosomes[i].getElement(j));
 
-                    cc[j] = this.chromosomes.get(i)[j];
                 }
 
-                clone_chromosomes.put(i, cc);
-
             }
-            clone.setChromosomes(clone_chromosomes);
         }
+
+        clone.setChromosomes(clone_chromosomes);
 
         clone.setFitness(this.fitness);
         clone.setSerializeGenotype(serializeGenotype);
@@ -445,10 +427,10 @@ public class Individual implements Cloneable, Configurable, Externalizable {
         /* Clone objective values */
         List<Double> obj = null;
         if (objectives != null) {
-            obj = new ArrayList<>(objectives.size());
+            obj = new ArrayList<Double>(objectives.size());
 
             for (Double d : objectives) {
-                obj.add(new Double(d));
+                obj.add(new Double(d.doubleValue()));
             }
         }
 
@@ -474,7 +456,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Tests if two individuals are or are not equals.
-     *
      * @param obj another Individual to compare.
      * @return true if they are equal, false in other case.
      */
@@ -499,8 +480,8 @@ public class Individual implements Cloneable, Configurable, Externalizable {
         if (this.violatedConstraints != other.violatedConstraints) {
             return false;
         }
-        if (this.chromosomes != other.chromosomes && (this.chromosomes == null
-                || !this.checkChromosomes(this.chromosomes, other.chromosomes))) {
+        if (this.chromosomes != other.chromosomes &&  (this.chromosomes == null || /* !Arrays.equals(this.chromosomes, other.chromosomes)) */
+                !this.checkChromosomes(this.chromosomes, other.chromosomes)))  {
             return false;
         }
 
@@ -515,24 +496,25 @@ public class Individual implements Cloneable, Configurable, Externalizable {
         return true;
     }
 
-    private boolean checkChromosomes(Map<Integer, double[]> c_1, Map<Integer, double[]> c_2) {
+    private boolean checkChromosomes(DoubleArray[] c_1, DoubleArray[] c_2) {
 
-        double[] d_1, d_2;
+        DoubleArray d_1, d_2;
 
-        if (c_1.size() != c_2.size()) {
+        if (c_1.length != c_2.length) {
             return false;
         }
 
-        for (int i = 0; i < c_1.size(); i++) {
+        for (int i = 0; i < c_1.length; i++) {
 
-            d_1 = c_1.get(i);
-            d_2 = c_2.get(i);
+            d_1 = c_1[i];
+            d_2 = c_2[i];
 
-            if (d_1.length != d_2.length) {
+            if (d_1.getNumElements() != d_2.getNumElements()) {
                 return false;
             }
 
-            if (!Arrays.equals(d_1, d_2)) {
+
+            if (!Arrays.equals(d_1.getElements(), d_2.getElements())) {
                 return false;
             }
 
@@ -543,7 +525,6 @@ public class Individual implements Cloneable, Configurable, Externalizable {
 
     /**
      * Resturns the hashCode of an Individual.
-     *
      * @return the hashCode of an Individual.
      */
     @Override
@@ -560,19 +541,18 @@ public class Individual implements Cloneable, Configurable, Externalizable {
     }
 
     /**
-     * This method is called whenever an instance of this class has to be
-     * serialized.<p>
-     *
-     * It might write to the output <code>out</code> the evaluation results or
-     * the genotype information or both, deppending on the value of
+     * This method is called whenever an instance of this class has to be serialized.<p>
+     * 
+     * It might write to the output <code>out</code> the evaluation results
+     * or the genotype information or both, deppending on the value of 
      * Individual#getSerializeEvalResults and Individual#getSerializeGenotype,
      * which are always writen at the beginning of the output to know later what
      * type of information is contained in the data.<p>
-     *
+     * 
      * Subclasses should override this method if they introduce new attibutes.
-     * Remember to call <code>super.writeExternal()</code> in order to be sure
-     * that the state of the parent class is serialized.
-     *
+     * Remember to call <code>super.writeExternal()</code> in order to
+     * be sure that the state of the parent class is serialized.    
+     * 
      * @param out - DataOutput to write the serialized bytes to.
      * @throws java.io.IOException
      */
@@ -618,13 +598,13 @@ public class Individual implements Cloneable, Configurable, Externalizable {
             if (this.chromosomes == null) {
                 out.writeInt(-1);
             } else {
-                out.writeInt(this.chromosomes.size());
-                for (int i = 0; i < this.chromosomes.size(); i++) {
-                    int genes = this.chromosomes.get(i).length;
+                out.writeInt(this.chromosomes.length);
+                for (int i = 0; i < this.chromosomes.length; i++) {
+                    int genes = this.chromosomes[i].getNumElements();
                     out.writeInt(genes);
 
                     for (int j = 0; j < genes; j++) {
-                        out.writeDouble(this.chromosomes.get(i)[j]);
+                        out.writeDouble(this.chromosomes[i].getElement(j));
                     }
                 }
             }
@@ -635,18 +615,18 @@ public class Individual implements Cloneable, Configurable, Externalizable {
     /**
      * This method is called whenever an instance of this class has to be
      * de-serialized.<p>
-     *
+     * 
      * It sets the values of Individual#getSerializeEvalResults and
      * Individual#getSerializeGenotype accordingly to the information received
      * so that subclasses can rely on them to know what kind of information is
      * to be read.<p>
-     *
+     * 
      * Subclasses should override this method if they introduce new attibutes.
-     * Remember to call <code>super.readExternal()</code> in order to be sure
-     * that the state of the parent class is de-serialized and the values of
-     * Individual#getSerializeEvalResults and Individual#getSerializeGenotype
+     * Remember to call <code>super.readExternal()</code> in order to
+     * be sure that the state of the parent class is de-serialized and the values
+     * of Individual#getSerializeEvalResults and Individual#getSerializeGenotype
      * contain the right information.
-     *
+     * 
      * @param in - DataInput from which the bytes are read.
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
@@ -704,31 +684,29 @@ public class Individual implements Cloneable, Configurable, Externalizable {
                 this.chromosomes = null;
             } else {
                 /* Read all the chromosomes */
-                this.chromosomes = new HashMap<>();
-                double[] chrom;
+                this.chromosomes = new DoubleArray[nChroms];
                 for (int i = 0; i < nChroms; i++) {
                     int nGenes = in.readInt();
-                    chrom = new double[nGenes];
+                    this.chromosomes[i] = new ResizableDoubleArray(nGenes);
                     for (int j = 0; j < nGenes; j++) {
-                        chrom[j] = in.readDouble();                        
+                        this.chromosomes[i].addElement(in.readDouble());
                     }
-                    this.chromosomes.put(i, chrom);
                 }
             }
         }
     }
 
     /**
-     * Copies the evaluation results of this individual to the passed
-     * individual. No deep copy is made, so this object and the passed
-     * individual share this information.<p>
-     *
-     * Subclasses of <code>Individual</could> have to override this method and
-     * call <code>super.copyEvalResults()</code> in order to handle the copy of
-     * the possible extra attibutes introduced in the subclass.
-     *
-     * @param other - The individual into which the phenotype of this object
-     * will be copied.
+     * Copies the evaluation results of this individual to the passed individual. No deep
+     * copy is made, so this object and the passed individual share this
+     * information.<p>
+     * 
+     * Subclasses of <code>Individual</could> have to override this method and call
+     * <code>super.copyEvalResults()</code> in order to handle the copy of the 
+     * possible extra attibutes introduced in the subclass.
+     * 
+     * @param other - The individual into which the phenotype of this object will
+     * be copied.
      */
     public void copyEvalResults(Individual other) {
         other.setViolatedConstraints(getViolatedConstraints());
@@ -741,11 +719,11 @@ public class Individual implements Cloneable, Configurable, Externalizable {
      * Copies the genotype of this individual to the passed individual. No deep
      * copy is made, so this object and the passed individual share the genotype
      * information.<p>
-     *
-     * Subclasses of <code>Individual</could> have to override this method and
-     * call <code>super.copyGenotype()</code> in order to handle the copy of the
+     * 
+     * Subclasses of <code>Individual</could> have to override this method and call
+     * <code>super.copyGenotype()</code> in order to handle the copy of the 
      * extra genotype information introduced in the subclass.
-     *
+     * 
      * @param other - The individual into which the genotype of this object will
      * be copied.
      */

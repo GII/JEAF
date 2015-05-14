@@ -41,12 +41,12 @@ import es.udc.gii.common.eaf.config.EAFConfiguration;
 import es.udc.gii.common.eaf.exception.ConfigurationException;
 import es.udc.gii.common.eaf.problem.Problem;
 import es.udc.gii.common.eaf.stoptest.CompositeStopTest;
+import es.udc.gii.common.eaf.util.ConfWarning;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.math.util.DoubleArray;
 import org.apache.commons.math.util.ResizableDoubleArray;
 
 /**
@@ -183,13 +183,14 @@ public class XMLSimpleFactory extends SimpleFactory {
                 throw new ConfigurationException("No chromosome specified.");
             }
 
-            Map<Integer, double[]> chrms = new HashMap<>();
-            double[] c;
-            
+            DoubleArray[] chrms = new DoubleArray[chromosomes.size()];
+
             for (int i = 0; i < chromosomes.size(); i++) {
                 int chrom_size = conf.getInt("Chromosome(" + i + ")[@size]");
-                c = new double[chrom_size];
-                chrms.put(i, c);
+                chrms[i] = new ResizableDoubleArray(chrom_size);
+                for (int j = 0; j < chrom_size; j++) {
+                    chrms[i].addElement(0.0);
+                }
             }
 
             ind.setChromosomes(chrms);

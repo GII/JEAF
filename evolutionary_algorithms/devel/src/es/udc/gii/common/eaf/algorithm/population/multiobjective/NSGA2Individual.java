@@ -24,7 +24,7 @@
  */
 package es.udc.gii.common.eaf.algorithm.population.multiobjective;
 
-import java.util.Map;
+import org.apache.commons.math.util.DoubleArray;
 
 /**
  * This class represents an individual for the NSGA2 algorithm.
@@ -44,7 +44,7 @@ public class NSGA2Individual extends MultiobjectiveIndividual {
         super();
     }
 
-    public NSGA2Individual(Map<Integer, double[]> chromosomes) {
+    public NSGA2Individual(DoubleArray[] chromosomes) {
         super(chromosomes);
     }
 

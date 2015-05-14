@@ -19,7 +19,6 @@ package es.udc.gii.common.eaf.algorithm.population.multiobjective;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.math.util.DoubleArray;
 
 /**
@@ -46,7 +45,7 @@ public class MultiobjectiveIndividual extends Individual {
         initialize();
     }
 
-    public MultiobjectiveIndividual(Map<Integer, double[]> chromosomes) {
+    public MultiobjectiveIndividual(DoubleArray[] chromosomes) {
         super(chromosomes);
         initialize();
     }
@@ -193,13 +192,13 @@ public class MultiobjectiveIndividual extends Individual {
         String r = "rank: " + getRank();
         if (getChromosomes() != null) {
             chrom += "[";
-            Map<Integer, double[]> c = getChromosomes();
-            for (int i = 0; i < c.size(); i++) {
+            DoubleArray[] c = getChromosomes();
+            for (int i = 0; i < c.length; i++) {
                 chrom += " ( ";
-                for (int j = 0; j < c.get(i).length - 1; j++) {
-                    chrom += c.get(i)[j] + ", ";
+                for (int j = 0; j < c[i].getNumElements() - 1; j++) {
+                    chrom += c[i].getElement(j) + ", ";
                 }
-                chrom += c.get(i)[c.get(i).length - 1];
+                chrom += c[i].getElement(c[i].getNumElements() - 1);
                 chrom += " )";
             }
             chrom += " ]";

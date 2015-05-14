@@ -20,7 +20,7 @@ import es.udc.gii.common.eaf.util.EAFMath;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import org.apache.commons.math.util.DoubleArray;
 
 /**
  *
@@ -43,7 +43,7 @@ public class MONSGA2Individual extends MultiobjectiveIndividual {
         this.projectedObjectives = new ArrayList<Double>();
     }
 
-    public MONSGA2Individual(Map<Integer, double[]> chromosomes) {
+    public MONSGA2Individual(DoubleArray[] chromosomes) {
         super(chromosomes);
         translatedObjectives = new ArrayList<Double>();
         this.projectedObjectives = new ArrayList<Double>();
