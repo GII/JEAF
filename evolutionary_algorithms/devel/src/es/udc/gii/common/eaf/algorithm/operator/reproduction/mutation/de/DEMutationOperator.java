@@ -143,9 +143,11 @@ public class DEMutationOperator extends MutationOperator {
         
         Individual base = (this.mutationStrategy.getMutatedIndividual(algorithm, target));
         //Se comprueban los límites de los genes:
+        double[] chromosome = new double[base.getChromosomeAt(0).length];
         for (int i = 0; i < base.getChromosomeAt(0).length; i++) {
-            base.getChromosomeAt(0)[i] = checkBounds(algorithm, base.getChromosomeAt(0)[i]);
+            chromosome[i] = checkBounds(algorithm, base.getChromosomeAt(0)[i]);
         }
+        base.setChromosomeAt(0, chromosome);
         
         //El individuo "base" es el nuevo individuo mutado, hay que cruzarlo para
         //crear el individuo "trial" que se comparará con el "target" para decidir

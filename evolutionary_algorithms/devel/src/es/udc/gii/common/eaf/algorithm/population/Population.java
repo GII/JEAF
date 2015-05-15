@@ -261,6 +261,18 @@ public class Population {
         return sub_population;
         
     }
+
+    public void replaceIndividuals(List<Individual> individualsToReplace, int initIndex) {
+        
+        int i = initIndex;
+        
+        for (Individual ind : individualsToReplace) {
+            this.individuals.set(i++, ind);
+        }
+        
+        
+    }
+
     
 }
 
